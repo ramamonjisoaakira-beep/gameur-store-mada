@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameur Store Mada - Règles & Sécurité Innovantes</title>
+    <style>
+        /* --- VARIABLES ET RESET --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-dark: #090a0f;
+            --bg-card: #121420;
+            --accent-neon: #ff1e56;
+            --accent-glow: rgba(255, 30, 86, 0.2);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #1e2235;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- EN-TÊTE DU SITE --- */
+        header {
+            background-color: rgba(18, 20, 32, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent-neon);
+            padding: 20px 40px;
+            display: block;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: table;
+            width: 100%;
+        }
+        .logo-box {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+        .logo-box span {
+            color: var(--accent-neon);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        .nav-box {
+            display: table-cell;
+            text-align: right;
+            vertical-align: middle;
+        }
+        .nav-box a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 25px;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        .nav-box a:hover, .nav-box a.active {
+            color: var(--accent-neon);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes revealCard {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes neonPulse {
+            0% { border-color: var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+            50% { border-color: var(--accent-neon); box-shadow: 0 0 15px rgba(255, 30, 86, 0.3); }
+            100% { border-color: var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        }
+
+        /* --- CONTENEUR PRINCIPAL --- */
+        .main-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        .section-intro {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: revealCard 0.8s ease-out forwards;
+        }
+        .section-intro h1 {
+            font-size: 38px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .section-intro h1 span {
+            color: var(--accent-neon);
+        }
+        .section-intro p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* --- GRILLE DE DESIGN DES RÈGLES --- */
+        .security-grid {
+            display: table;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 30px;
+        }
+
+        .security-row {
+            display: table-row;
+        }
+
+        .security-card {
+            display: table-cell;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            animation: revealCard 1s ease-out forwards;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Effet au survol en CSS */
+        .security-row:hover .security-card {
+            transform: scale(1.01) translateX(5px);
+            border-color: var(--accent-neon);
+            box-shadow: 0 10px 30px rgba(255, 30, 86, 0.1);
+        }
+
+        .card-header-layout {
+            display: table;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .card-icon-cell {
+            display: table-cell;
+            width: 70px;
+            vertical-align: middle;
+        }
+        .icon-shield-wrap {
+            width: 55px;
+            height: 55px;
+            background-color: rgba(255, 30, 86, 0.1);
+            border: 1px solid var(--accent-neon);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-neon);
+            font-weight: bold;
+            font-size: 22px;
+        }
+        .card-title-cell {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 15px;
+        }
+        .card-title-cell h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-body-text {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .card-body-text strong {
+            color: var(--text-main);
+        }
+
+        /* Badge d'action clignotant */
+        .pulse-badge {
+            display: inline-block;
+            background-color: rgba(255, 30, 86, 0.15);
+            color: var(--accent-neon);
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 20px;
+            margin-top: 20px;
+            border: 1px solid var(--accent-neon);
+            text-transform: uppercase;
+            animation: neonPulse 3s infinite ease-in-out;
+        }
+
+        /* --- VIGILANCE CHECKLIST TABLE --- */
+        .checklist-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 50px;
+            animation: revealCard 1.2s ease-out forwards;
+        }
+        .checklist-section h3 {
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .checklist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .checklist-table th {
+            background-color: rgba(255, 30, 86, 0.05);
+            color: var(--accent-neon);
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--accent-neon);
+        }
+        .checklist-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 15px;
+        }
+        .checklist-table tr:hover td {
+            background-color: rgba(255,255,255,0.01);
+            color: var(--text-main);
+        }
+        .status-true {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .status-false {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* --- FOOTER DE VOTRE DESIGN ORIGINAL --- */
+        footer {
+            background-color: #050609;
+            border-top: 2px solid var(--accent-neon);
+            color: #fff;
+            padding: 50px 30px 25px 30px;
+            margin-top: 100px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: table;
+            width: 100%;
+        }
+        .footer-column {
+            display: table-cell;
+            width: 33.333%;
+            padding: 0 25px;
+            vertical-align: top;
+        }
+        .footer-column h4 {
+            color: #fff;
+            font-size: 15px;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 22px;
+            letter-spacing: 1px;
+        }
+        .footer-column p, .footer-column ul {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        .footer-column ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-column ul li a:hover {
+            color: var(--accent-neon);
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 45px auto 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 12px;
+            color: #475569;
+        }
+        .footer-bottom span {
+            color: var(--text-muted);
+        }
+        
+        .badge-secure-mg {
+            background-color: var(--accent-neon);
+            color: #fff;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRE DE NAVIGATION REPRIS DE VOTRE PROJET -->
+    <header>
+        <div class="header-container">
+            <div class="logo-box">GAMEUR STORE <span>MADA</span></div>
+            <div class="nav-box">
+                <a href="acheter.html">Comment acheter ?</a>
+                <a href="#" class="active">Règles & Sécurité</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- INTRODUCTION ANIMÉE -->
+        <div class="section-intro">
+            <h1>Charte de <span>Sécurité & Règles</span></h1>
+            <p>Découvrez notre nouvelle charte de protection exclusive. Chez Gameur Store Mada, nous éliminons 100% des risques d'arnaque pour vous offrir une expérience d'achat haut de gamme.</p>
+        </div>
+
+        <!-- GRILLE DES NOUVELLES RÈGLES STRUCTURÉES -->
+        <div class="security-grid">
+            
+            <!-- RÈGLE 1 -->
+            <div class="security-row">
+                <div class="security-card">
+                    <div class="card-header-layout">
+                        <div class="card-icon-cell">
+                            <div class="icon-shield-wrap">01</div>
+                        </div>
+                        <div class="card-title-cell">
+                            <h2>Double Vérification Humaine</h2>
+                        </div>
+                    </div>
+                    <div class="card-body-text">
+                        Chaque compte PUBG Mobile ou jeu vidéo fait l'objet d'un audit complet par nos administrateurs. Nous vérifions manuellement la véracité des skins, du grade, de l'inventaire complet et l'absence totale d'historique de triche ou de bannissement avant la mise en ligne.
+                    </div>
+                    <div class="pulse-badge">Statut : Certifié Conforme</div>
+                </div>
+            </div>
+
+            <!-- RÈGLE 2 -->
+            <div class="security-row">
+                <div class="security-card">
+                    <div class="card-header-layout">
+                        <div class="card-icon-cell">
+                            <div class="icon-shield-wrap">02</div>
+                        </div>
+                        <div class="card-title-cell">
+                            <h2>Contacter l'administrateurs et Mefier vous aux arnaqueur</h2>
+                        </div>
+                    </div>
+                    <div class="card-body-text">
+                        Toutes les transactions doivent s'effectuer via nos liens de contact officiels. <strong>Méfiez-vous des faux profils</strong> ou des personnes vous contactant en privé au nom de notre boutique. Nos administrateurs officiels valideront toujours l'achat avec vous en direct...Et ne fait jamais confiance aux compte fake et profil verouiller
+                    </div>
+                    <div class="pulse-badge">Canal : 100% Officiel</div>
+                </div>
+            </div>
+
+            <!-- RÈGLE 3 -->
+            <div class="security-row">
+                <div class="security-card">
+                    <div class="card-header-layout">
+                        <div class="card-icon-cell">
+                            <div class="icon-shield-wrap">03</div>
+                        </div>
+                        <div class="card-title-cell">
+                            <h2>Blindage et Changement des Liaisons</h2>
+                        </div>
+                    </div>
+                    <div class="card-body-text">
+                        Lors de la livraison du compte, notre équipe procède au nettoyage complet des anciennes liaisons (Facebook, Twitter, Google, e-mail). Nous lions vos propres coordonnées en direct afin d'assurer une <strong>protection anti-récupération définitive</strong> par l'ancien propriétaire. Changer instantanément toute les accès de votre nouveaux compte
+                    </div>
+                    <div class="pulse-badge">Sécurité : Anti-Back</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CHECKLIST DE VIGILANCE EN TABLEAU -->
+        <div class="checklist-section">
+            <h3>Tableau de Vigilance pour nos Joueurs</h3>
+            <table class="checklist-table">
+                <thead>
+                    <tr>
+                        <th>Situation Rencontrée</th>
+                        <th>Vrai Admin Gameur Store</th>
+                        <th>Signalement / Risque d'Arnaque</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lieu de discussion</strong></td>
+                        <td class="status-true">Sur notre page officielle unique ou via notre compte personnel verifier</td>
+                        <td class="status-false">Un groupe privé externe ou un compte personnel inconnu</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Demande de codes d'accès</strong></td>
+                        <td class="status-true">Uniquement lors de l'étape finale de liaison à vos comptes apres avoir l'admi donne le feu vert</td>
+                        <td class="status-false">Dès le début de la conversation pour "vérifier"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pression ou Urgence</strong></td>
+                        <td class="status-true">Prend le temps nécessaire pour sécuriser chaque étape avec vous</td>
+                        <td class="status-false">"Dépêchez-vous de payer, j'ai une autre offre immédiate"</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- LE FOOTER EXACT DE VOTRE SITE INTERNET -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Gameur Store Mada</h4>
+                <p>La plateforme de référence à Madagascar pour l'achat et la vente sécurisée de comptes PUBG Mobile. Pas d'arnaque, que du fiable.</p>
+                <p style="margin-top: 20px;"><strong>Statut :</strong> 100% Sécurisé <span class="badge-secure-mg">MG</span></p>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Liens Utiles</h4>
+                <ul>
+                    <li><a href="index.html">Découvrir nos offres</a></li>
+                    <li><a href="acheter.html">Comment acheter ?</a></li>
+                    <li><a href="vente.html">Vendre un compte</a></li>
+                    <li><a href="vente.html" class="active">Règles & Sécurité</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Paiement & Contact</h4>
+                <p><strong>Transactions :</strong><br>Mvola, Airtel Money, Orange Money, Espèces</p>
+                <p style="margin-top: 20px;"><strong>Contact :</strong><br>Rejoignez-nous sur notre page officielle : Gameur Store Madagascar</p>
+                <p style="margin-top: 15px;"><a href="#" style="color: var(--accent-neon); text-decoration: none; font-weight: bold;"><i class="fab fa-facebook"></i> Facebook</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            &copy; 2026 Gameur Store Madagascar. Tous droits réservés. <span>Créé par MARCO</span>
+        </div>
+    </footer>
+
+</body>
+</html>

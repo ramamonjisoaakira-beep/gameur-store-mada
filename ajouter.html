@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une annonce - Gameur Store Mada</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <header>
+        <h1>Gameur Store Madagascar</h1>
+        <p><a href="index.html" style="color: #ff0000; text-decoration: none;">← Retour à l'accueil</a></p>
+    </header>
+
+    <main style="max-width: 600px; margin: 40px auto; padding: 20px; background-color: #111; border-radius: 8px;">
+        <h2 style="color: #fff; border-left: 5px solid #ff0000; padding-left: 10px; margin-bottom: 20px;">
+            Poster une nouvelle pub
+        </h2>
+
+        <form id="form-annonce" style="display: flex; flex-direction: column; gap: 15px;">
+            
+            <div>
+                <label for="titre" style="color: #ccc; display: block; margin-bottom: 5px;">Titre du compte / jeu :</label>
+                <input type="text" id="titre" placeholder="Ex: Compte PUBG Mobile" required 
+                       style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px;">
+            </div>
+
+            <div>
+                <label for="description" style="color: #ccc; display: block; margin-bottom: 5px;">Description de l'offre :</label>
+                <textarea id="description" rows="5" placeholder="Détails du compte (skins, niveau, prix...)" required
+                          style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; resize: vertical;"></textarea>
+            </div>
+
+            <div>
+                <label for="telephone" style="color: #ccc; display: block; margin-bottom: 5px;">Numéro de téléphone (Contact) :</label>
+                <input type="tel" id="telephone" placeholder="Ex: +261 34 XX XXX XX" required 
+                       style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px;">
+                <small style="color: #777; display: block; margin-top: 5px;">Pour que l'acheteur puisse t'appeler ou t'écrire sur WhatsApp.</small>
+            </div>
+
+            <div>
+                <label for="image-file" style="color: #ccc; display: block; margin-bottom: 5px;">Télécharger la capture d'écran :</label>
+                <input type="file" id="image-file" accept="image/*" required
+                       style="width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px;">
+                <small style="color: #777; display: block; margin-top: 5px;">Formats acceptés : PNG, JPG, JPEG.</small>
+            </div>
+
+            <button type="submit" style="background-color: #e5b800; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px;">
+                Publier automatiquement
+            </button>
+<script>
+    document.getElementById('form-annonce').addEventListener('submit', function(e) {
+        e.preventDefault(); // Empêche la page de se recharger
+
+        // 1. Récupérer les infos tapées par le client
+        const titre = document.getElementById('titre').value;
+        const description = document.getElementById('description').value;
+        const telephone = document.getElementById('telephone').value;
+        const imageFile = document.getElementById('image-file').files[0];
+
+        // 2. Convertir la capture d'écran en lien temporaire pour l'affichage
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const nouvelleAnnonce = {
+                titre: titre,
+                description: description,
+                telephone: telephone,
+                image: event.target.result // C'est la capture d'écran convertie
+            };
+
+            // 3. Sauvegarder dans la mémoire du navigateur
+            let annonces = JSON.parse(localStorage.getItem('annoncesClients')) || [];
+            annonces.push(nouvelleAnnonce);
+            localStorage.setItem('annoncesClients', JSON.stringify(annonces));
+
+            alert('Annonce publiée avec succès !');
+            window.location.href = 'index.html'; // Redirige vers l'accueil
+        };
+        
+        if(imageFile) {
+            reader.readAsDataURL(imageFile);
+        }
+    });
+</script>
+        </form>
+    </main>
+
+</body>
+</html>

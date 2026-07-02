@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamer Store - Login & Register</title>
+    <link rel="stylesheet" href="connex.css">
+</head>
+<body>
+
+    <header class="animate-drop">
+        <div class="header-content">
+            </div>
+    </header>
+
+    <main class="container">
+
+        <div id="login-block" class="info animate-slide-up">
+            <div class="form-header">
+                <h2>SECURE_LOGIN</h2>
+                <div class="line"></div>
+            </div>
+
+            <form action="index.html" method="POST">
+                <div class="azert">
+                    <div class="input-group">
+                        <label>EMAIL ADDRESS</label>
+                        <input type="email" placeholder="email@domain.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>PASSWORD</label>
+                        <input type="password" placeholder="........" required>
+                    </div>
+                </div>
+
+                <div class="loli">
+                    <button type="submit" class="btn-gaming pulse">START_SESSION</button>
+                </div>
+            </form>
+
+            <p class="switch-form">Nouveau joueur ? <a href="#" id="to-register">Créer un compte ici</a></p>
+        </div>
+
+        <div id="register-block" class="info animate-slide-up" style="display: none;">
+            <div class="form-header">
+                <h2>NEW_PLAYER_REGISTRATION</h2>
+                <div class="line"></div>
+            </div>
+
+            <form id="form-inscription-complete" action="index.html" method="POST">
+                
+                <div class="input-group">
+                    <label>NOM ET PRÉNOM</label>
+                    <input type="text" placeholder="Nom complet" required name="nom_complet">
+                </div>
+
+                <div class="input-group">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" id="reg-email" placeholder="email@domain.com" required name="email">
+                </div>
+
+                <div class="input-group" style="display: flex; gap: 10px; align-items: flex-end;">
+                    <div style="flex-grow: 1;">
+                        <label style="color: #ff3344;">CODE DE VALIDATION</label>
+                        <input type="text" id="reg-code" placeholder="Cliquez à droite" disabled style="opacity: 0.5; background: #222;">
+                    </div>
+                    <button type="button" id="btn-envoyer-code" style="background: #ba00ba; color: white; border: 1px solid #333; padding: 10px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; white-space: nowrap; height: 42px;">
+                        Obtenir le code
+                    </button>
+                </div>
+                <small id="statut-code" style="display: block; margin-top: -5px; margin-bottom: 15px; font-size: 12px; font-weight: bold;"></small>
+
+                <div class="input-group">
+                    <label>PASSWORD (8 CHARACTERS MIN.)</label>
+                    <input type="password" minlength="8" placeholder="........" required name="password">
+                </div>
+
+                <div class="input-group">
+                    <label>MADAGASCAR PHONE</label>
+                    <input type="tel" pattern="[0-9]{10}" placeholder="034\033\032XXXXXXX" required name="phone">
+                </div>
+
+                <div class="input-group">
+                    <label>LIEN PROFIL FACEBOOK</label>
+                    <input type="text" placeholder="facebook.com/votre.profil" required name="facebook">
+                </div>
+
+                <div class="input-group">
+                    <label>ADRESSE EXACTE (VILLE / QUARTIER / LOT)</label>
+                    <input type="text" placeholder="Ex: Antananarivo, Itaosy, Lot IV..." required name="adresse">
+                </div>
+
+                <div class="input-group" style="text-align: center; margin-bottom: 25px;">
+                    <label style="display: block; text-align: left; margin-bottom: 10px; color: #ba00ba;">IDENTIFICATION FLASH (OPTIONNEL)</label>
+                    <video id="webcam" autoplay playsinline style="width: 100%; max-width: 320px; height: auto; background: #000; border-radius: 4px;"></video>
+                    <img id="photo-preview" style="display: none; width: 100%; max-width: 320px; height: auto; border-radius: 4px;">
+                    
+                    <div style="margin-top: 10px;">
+                        <button type="button" id="capture-btn" class="btn-gaming" style="padding: 8px 15px;">Prendre une photo</button>
+                        <button type="button" id="retry-btn" class="btn-gaming" style="padding: 8px 15px; display: none;">Recommencer</button>
+                    </div>
+                    <input type="hidden" id="photo-data" name="player_photo">
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+
+                <div class="radio-box">
+                    <span class="label-neon">SELECT_GENDER:</span>
+                    <div class="radio-group">
+                        <label class="radio-container">
+                            <input type="radio" name="sexe" value="H" checked> Homme
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="sexe" value="F"> Femme
+                        </label>
+                    </div>
+                </div>
+
+                <div class="loli" style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn-gaming pulse" style="flex: 1;">CREATE_ACCOUNT</button>
+                    <button type="reset" class="btn-gaming" style="flex: 1; background: #222;">RESET</button>
+                </div>
+            </form>
+
+            <p class="switch-form">Déjà un compte ? <a href="#" id="to-login">Se connecter</a></p>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>SYSTEM_READY // &copy; 2026 Gameur Store Mada</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Scripts de bascule d'origine ---
+        const loginBlock = document.getElementById('login-block');
+        const registerBlock = document.getElementById('register-block');
+        const toRegisterLink = document.getElementById('to-register');
+        const toLoginLink = document.getElementById('to-login');
+
+        toRegisterLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginBlock.style.display = 'none';
+            registerBlock.style.display = 'block';
+        });
+
+        toLoginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerBlock.style.display = 'none';
+            loginBlock.style.display = 'block';
+        });
+
+        // --- 2. Script Caméra d'origine ---
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const photoPreview = document.getElementById('photo-preview');
+        const photoDataInput = document.getElementById('photo-data');
+
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => { console.log("Caméra non disponible ou bloquée."); });
+
+        captureBtn.addEventListener('click', function() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const dataURL = canvas.toDataURL('image/png');
+            photoDataInput.value = dataURL;
+            photoPreview.src = dataURL;
+            
+            video.style.display = 'none';
+            photoPreview.style.display = 'block';
+            captureBtn.style.display = 'none';
+            retryBtn.style.display = 'inline-block';
+        });
+
+        retryBtn.addEventListener('click', function() {
+            video.style.display = 'block';
+            photoPreview.style.display = 'none';
+            captureBtn.style.display = 'inline-block';
+            retryBtn.style.display = 'none';
+            photoDataInput.value = '';
+        });
+
+        // --- 3. Nouveau Script du Code de Validation par Email ---
+        const btnEnvoyerCode = document.getElementById('btn-envoyer-code');
+        const inputEmail = document.getElementById('reg-email');
+        const inputCode = document.getElementById('reg-code');
+        const statutCode = document.getElementById('statut-code');
+        const formInscriptionComplete = document.getElementById('form-inscription-complete');
+
+        let codeGenere = null;
+
+        btnEnvoyerCode.addEventListener('click', () => {
+            const email = inputEmail.value.trim();
+            
+            if (!email || !email.includes('@')) {
+                alert("Veuillez d'abord inscrire une adresse e-mail valide.");
+                return;
+            }
+
+            // Génération du code à 4 chiffres
+            codeGenere = Math.floor(1000 + Math.random() * 9000);
+
+            // Activation du champ de saisie
+            inputCode.disabled = false;
+            inputCode.style.background = "#111";
+            inputCode.style.opacity = "1";
+            inputCode.placeholder = "Entrez les 4 chiffres";
+
+            // Message visuel sous le champ
+            statutCode.innerText = "Code envoyé ! Vérifiez votre boîte mail.";
+            statutCode.style.color = "#28a745"; // Vert Gaming
+
+            // Alerte de test pour Chrome
+            alert(`[TEST] Le code secret envoyé à ${email} est : ${codeGenere}`);
+            console.log("Code secret : " + codeGenere);
+        });
+
+        // Blocage de la soumission si le code entré est incorrect
+        formInscriptionComplete.addEventListener('submit', (e) => {
+            const codeUtilisateur = inputCode.value.trim();
+
+            if (!codeGenere) {
+                e.preventDefault();
+                alert("Veuillez valider votre adresse e-mail en cliquant sur 'Obtenir le code' d'abord.");
+                return;
+            }
+
+            if (codeUtilisateur !== String(codeGenere)) {
+                e.preventDefault(); // Bloque l'envoi vers index.html
+                alert("❌ Le code de validation est incorrect !");
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

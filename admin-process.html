@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 Salon Sécurisé - Gameur Store</title>
+    <style>
+        body {
+            background-color: #0b0b0c;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 90vh;
+            background: #000000;
+            border: 2px solid #ba00ba;
+            box-shadow: 0 0 20px rgba(186, 0, 186, 0.3);
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chat-header {
+            background: #111112;
+            padding: 15px;
+            border-bottom: 2px solid #ba00ba;
+            text-align: center;
+        }
+        .chat-header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #ffcc00;
+            letter-spacing: 1px;
+        }
+        .status-badge {
+            display: inline-block;
+            background: rgba(186, 0, 186, 0.2);
+            color: #ba00ba;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 5px;
+            border: 1px solid #ba00ba;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-image: linear-gradient(rgba(11, 11, 12, 0.9), rgba(11, 11, 12, 0.9));
+        }
+        .message {
+            max-width: 75%;
+            padding: 12px;
+            border-radius: 8px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        .msg-admin {
+            background: #ba00ba;
+            color: #fff;
+            align-self: center;
+            text-align: center;
+            border: 1px solid #fff;
+            box-shadow: 0 0 10px rgba(186, 0, 186, 0.5);
+        }
+        .msg-vendeur {
+            background: #222;
+            color: #fff;
+            align-self: flex-start;
+            border-left: 4px solid #ff0000;
+        }
+        .msg-acheteur {
+            background: #1c1c1e;
+            color: #fff;
+            align-self: flex-end;
+            border-right: 4px solid #00ffcc;
+        }
+        .sender-name {
+            font-size: 11px;
+            color: #ffcc00;
+            margin-bottom: 4px;
+            font-weight: bold;
+            display: block;
+        }
+        .chat-input-area {
+            background: #111112;
+            padding: 15px;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: #000;
+            border: 1px solid #ba00ba;
+            color: #fff;
+            padding: 12px;
+            border-radius: 4px;
+            outline: none;
+        }
+        .btn-send {
+            background: #ba00ba;
+            color: #fff;
+            border: none;
+            padding: 0 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn-send:hover {
+            background: #d600d6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2 id="room-title">🔒 TRANSACTION P2P — SÉCURISÉE</h2>
+            <div class="status-badge">🟢 MODÉRATEUR EN LIGNE</div>
+        </div>
+
+        <div class="chat-messages" id="chatBox">
+            <div class="message msg-admin">
+                <span class="sender-name">[SYSTEME SYSTEM_READY]</span>
+                Bienvenue dans le salon de transaction sécurisé. L'administrateur supervise ce tchat. Vendeur et Acheteur, vous pouvez communiquer ici pour finaliser l'échange du compte PUBG.
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="messageInput" class="chat-input" placeholder="Écrivez votre message ici..." autocomplete="off">
+            <button id="sendBtn" class="btn-send">Envoyer</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        // Config de ton projet Firebase (Se synchronise avec ton projet existant)
+        const firebaseConfig = {
+            databaseURL: "https://gameur-store-mada-default-rtdb.firebaseio.com" 
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+
+        // Récupération des détails du compte sélectionné pour créer un salon unique
+        const annonceSelectionnee = JSON.parse(localStorage.getItem('annonceSelectionnee')) || { titre: "Compte-PUBG" };
+        const cleanTitle = annonceSelectionnee.titre.replace(/[^a-zA-Z0-9]/g, "_");
+        const chatRoomRef = database.ref('salons_transaction/' + cleanTitle);
+
+        // Détermination du rôle de l'utilisateur (Pour le test, on demande au chargement)
+        let role = localStorage.getItem('chat_role');
+        if (!role) {
+            const choix = prompt("Qui êtes-vous ? Tapez :\n1 pour Acheteur\n2 pour Vendeur\n3 pour Admin");
+            if(choix === "1") role = "Acheteur";
+            else if(choix === "2") role = "Vendeur";
+            else role = "Admin";
+            localStorage.setItem('chat_role', role);
+        }
+
+        document.getElementById('room-title').innerText = `🔒 SALON : ${annonceSelectionnee.titre}`;
+
+        // Fonction d'envoi du message sur Internet
+        function envoyerMessage() {
+            const text = document.getElementById('messageInput').value.trim();
+            if (text === "") return;
+
+            chatRoomRef.push({
+                auteur: role,
+                texte: text,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+
+            document.getElementById('messageInput').value = "";
+        }
+
+        document.getElementById('sendBtn').addEventListener('click', envoyerMessage);
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') envoyerMessage();
+        });
+
+        // Réception et affichage en temps réel pour tous les participants connecté au même moment
+        chatRoomRef.on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            const chatBox = document.getElementById('chatBox');
+            
+            let classeMsg = "msg-acheteur";
+            if (data.auteur === "Admin") classeMsg = "msg-admin";
+            if (data.auteur === "Vendeur") classeMsg = "msg-vendeur";
+
+            const msgHtml = `
+                <div class="message ${classeMsg}">
+                    <span class="sender-name">${data.auteur}</span>
+                    ${data.texte}
+                </div>
+            `;
+            
+            chatBox.innerHTML += msgHtml;
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll automatique vers le bas
+        });
+    </script>
+</body>
+</html>

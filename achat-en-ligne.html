@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Tchat Vendeur / Acheteur - Gameur Store</title>
+    <style>
+        body {
+            background-color: #0b0b0c;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 90vh;
+            background: #000000;
+            border: 2px solid #25D366; /* Vert pour l'achat en ligne */
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.2);
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chat-header {
+            background: #111112;
+            padding: 15px;
+            border-bottom: 2px solid #25D366;
+            text-align: center;
+        }
+        .chat-header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #ffcc00;
+        }
+        .status-badge {
+            display: inline-block;
+            background: rgba(37, 211, 102, 0.1);
+            color: #25D366;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 5px;
+            border: 1px solid #25D366;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: #0b0b0c;
+        }
+        .message {
+            max-width: 75%;
+            padding: 12px;
+            border-radius: 8px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        .msg-vendeur {
+            background: #222;
+            color: #fff;
+            align-self: flex-start;
+            border-left: 4px solid #ff0000;
+        }
+        .msg-acheteur {
+            background: #1c1c1e;
+            color: #fff;
+            align-self: flex-end;
+            border-right: 4px solid #00ffcc;
+        }
+        .sender-name {
+            font-size: 11px;
+            color: #ffcc00;
+            margin-bottom: 4px;
+            font-weight: bold;
+            display: block;
+        }
+        .chat-input-area {
+            background: #111112;
+            padding: 15px;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: #000;
+            border: 1px solid #25D366;
+            color: #fff;
+            padding: 12px;
+            border-radius: 4px;
+            outline: none;
+        }
+        .btn-send {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 0 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn-send:hover {
+            background: #20b855;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2 id="room-title">🌐 DISCUSSION DIRECTE VENDEUR / ACHETEUR</h2>
+            <div class="status-badge">💬 TCHAT PRIVÉ</div>
+        </div>
+
+        <div class="chat-messages" id="chatBox"></div>
+        
+
+        <div class="chat-input-area">
+            <input type="text" id="messageInput" class="chat-input" placeholder="Écrivez votre message privé..." autocomplete="off">
+            <button id="sendBtn" class="btn-send">Envoyer</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            databaseURL: "https://gameur-store-mada-default-rtdb.firebaseio.com" 
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+
+        const annonceSelectionnee = JSON.parse(localStorage.getItem('annonceSelectionnee')) || { titre: "Compte-PUBG" };
+        const cleanTitle = annonceSelectionnee.titre.replace(/[^a-zA-Z0-9]/g, "_");
+        
+        // On enregistre ça dans un dossier "discussions_privees" séparé de l'admin
+        const chatRoomRef = database.ref('discussions_privees/' + cleanTitle);
+
+        // Rôle (Acheteur ou Vendeur uniquement, pas d'Admin ici)
+        let role = localStorage.getItem('private_chat_role');
+        if (!role) {
+            const choix = prompt("Qui êtes-vous ? Tapez :\n1 pour Acheteur\n2 pour Vendeur");
+            role = (choix === "2") ? "Vendeur" : "Acheteur";
+            localStorage.setItem('private_chat_role', role);
+        }
+
+        document.getElementById('room-title').innerText = `🌐 COMPTE : ${annonceSelectionnee.titre}`;
+
+        function envoyerMessage() {
+            const text = document.getElementById('messageInput').value.trim();
+            if (text === "") return;
+
+            chatRoomRef.push({
+                auteur: role,
+                texte: text,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+
+            document.getElementById('messageInput').value = "";
+        }
+
+        document.getElementById('sendBtn').addEventListener('click', envoyerMessage);
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') envoyerMessage();
+        });
+
+        chatRoomRef.on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            const chatBox = document.getElementById('chatBox');
+            
+            let classeMsg = (data.auteur === "Vendeur") ? "msg-vendeur" : "msg-acheteur";
+
+            const msgHtml = `
+                <div class="message ${classeMsg}">
+                    <span class="sender-name">${data.auteur}</span>
+                    ${data.texte}
+                </div>
+            `;
+            
+            chatBox.innerHTML += msgHtml;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organisation de Rendez-vous</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #25D366; /* Couleur WhatsApp */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #128C7E;
+        }
+        .vendeur-box {
+            background-color: #e5ddd5; /* Fond style WhatsApp */
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 100px;
+            white-space: pre-line;
+            border-left: 5px solid #075e54;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>1. Côté Acheteur (Prendre RDV)</h2>
+        <form id="rdvForm">
+            <div class="form-group">
+                <label for="nom">Votre Nom :</label>
+                <input type="text" id="nom" placeholder="Ex: Jean Dupont" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lieu">Lieu du rendez-vous :</label>
+                <input type="text" id="lieu" placeholder="Ex: Café du Centre, Paris" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date :</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="heure">Heure :</label>
+                <input type="time" id="heure" required>
+            </div>
+            
+            <button type="button" onclick="envoyerWhatsApp()">Valider et envoyer sur WhatsApp</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>2. Côté Vendeur (Aperçu)</h2>
+        <p>Voici le message structuré que le vendeur va recevoir :</p>
+        <div class="vendeur-box" id="aperçuMessage">
+            Aucun rendez-vous envoyé pour le moment.
+        </div>
+    </div>
+
+    <script>
+        function envoyerWhatsApp() {
+            // Récupération des données du formulaire
+            const nom = document.getElementById('nom').value;
+            const lieu = document.getElementById('lieu').value;
+            const date = document.getElementById('date').value;
+            const heure = document.getElementById('heure').value;
+
+            // Vérification que tous les champs sont remplis
+            if (!nom || !lieu || !date || !heure) {
+                alert("Veuillez remplir tous les champs avant de valider.");
+                return;
+            }
+
+            // Construction du message structuré
+            const message = `Bonjour, je souhaite confirmer le rendez-vous :\n\n` +
+                            `👤 *Nom :* ${nom}\n` +
+                            `📍 *Lieu :* ${lieu}\n` +
+                            `📅 *Date :* ${date}\n` +
+                            `⏰ *Heure :* ${heure}`;
+
+            // 1. Simuler l'affichage côté vendeur sur la page
+            document.getElementById('aperçuMessage').innerText = message;
+
+            // 2. Ouvrir WhatsApp avec le message pré-rempli
+            // REMPLACEZ '1234567890' par votre vrai numéro de téléphone (avec l'indicatif pays, ex: 33612345678 pour la France)
+            const numeroTelephone = "1234567890"; 
+            const urlWhatsApp = `https://wa.me/${numeroTelephone}?text=${encodeURIComponent(message)}`;
+            
+            // Ouvre l'application ou le site WhatsApp dans un nouvel onglet
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+    <form id="rdvForm">
+        <button type="button" onclick="envoyerWhatsApp()">Valider le RDV</button>
+    </form>
+
+    <script>
+        // 1. On récupère dynamiquement le numéro du vendeur 
+        // (généré par ton serveur/base de données)
+        const numeroDuVendeurConcerne = "33612345678"; // Ce numéro changera selon le vendeur
+
+        function envoyerWhatsApp() {
+            const nom = document.getElementById('nom').value;
+            const lieu = document.getElementById('lieu').value;
+            const date = document.getElementById('date').value;
+            const heure = document.getElementById('heure').value;
+
+            const message = `Bonjour, je souhaite confirmer le rendez-vous :\n\n👤 *Nom :* ${nom}\n📍 *Lieu :* ${lieu}\n📅 *Date :* ${date}\n⏰ *Heure :* ${heure}`;
+
+            // 2. On utilise la variable du numéro ici
+            const urlWhatsApp = `https://wa.me/${numeroDuVendeurConcerne}?text=${encodeURIComponent(message)}`;
+            
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+
+</body>
+</html>

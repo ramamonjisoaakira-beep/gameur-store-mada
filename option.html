@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options d'achat - Gameur Store</title>
+    <style>
+        body {
+            background-color: #0b0b0c;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .options-container {
+            width: 100%;
+            max-width: 500px;
+            background: #000000;
+            padding: 30px;
+            border-left: 4px solid #ba00ba;
+            border-right: 4px solid #ba00ba;
+            box-shadow: 0 0 20px rgba(186, 0, 186, 0.2);
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .title-neon {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #ba00ba;
+            padding-bottom: 5px;
+        }
+        .option-block {
+            background: #111112;
+            border: 1px solid #333335;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .option-block:hover {
+            border-color: #ba00ba;
+            transform: scale(1.02);
+        }
+        .btn-gaming {
+            width: 100%;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-admin {
+            background: #ba00ba;
+            box-shadow: 0 0 10px rgba(186, 0, 186, 0.4);
+        }
+        .btn-online {
+            background: #25D366;
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+        }
+        .btn-face {
+            background: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+        }
+        .small-phrase {
+            color: #aaaaaa;
+            font-size: 13px;
+            line-height: 1.4;
+            margin: 0;
+        }
+        .back-btn {
+            color: #ff3344;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="options-container">
+        <div class="title-neon">CHOIX_METHODE_D_ACHAT</div>
+        
+        <div class="option-block">
+            <a href="admin-process.html" class="btn-gaming btn-admin">⚙️ Passage Admin</a>
+            <p class="small-phrase">Sécurisez votre transaction grâce à un modérateur officiel pour éviter toute tentative d'arnaque.</p>
+        </div>
+
+    <div class="option-block">
+    <button onclick="lancerAchatEnLigne()" class="btn-gaming btn-online" style="width: 100%; border: none;">
+        🌐 Achat en ligne
+    </button>
+    <p class="small-phrase">Payez par Mobile Money (Mvola, Airtel, Orange) après avoir ouvert la discussion directe avec le vendeur.</p>
+</div>
+
+        <div class="option-block">
+            <a href="face-a-face.html" class="btn-gaming btn-face">🤝 Achat Face à Face</a>
+            <p class="small-phrase">Prenez un rendez-vous physique sécurisé dans votre ville pour tester le compte et payer directement en espèces.</p>
+        </div>
+
+        <a href="acheter.html" class="back-btn">← Annuler et revenir</a>
+    </div>
+<script>
+    function lancerAchatEnLigne() {
+        // 1. On récupère les infos du compte PUBG et le téléphone du vendeur
+        const annonce = JSON.parse(localStorage.getItem('annonceSelectionnee'));
+        
+        if (annonce && annonce.telephone) {
+            const numeroVendeur = annonce.telephone;
+            const titreCompte = encodeURIComponent(annonce.titre || 'Compte PUBG');
+            
+            // 2. On prépare le message d'alerte pour WhatsApp
+            const messageWhatsApp = `Salut ! Je viens de cliquer sur 'Acheter Direct' pour ton compte PUBG (${titreCompte}). Rejoins-moi vite sur le tchat du site pour qu'on fasse l'échange !`;
+            const lienWhatsApp = `https://wa.me/${numeroVendeur}?text=${messageWhatsApp}`;
+            
+            // 3. Action : On ouvre d'abord WhatsApp dans un nouvel onglet pour alerter le vendeur
+            window.open(lienWhatsApp, '_blank');
+        }
+
+        // 4. On redirige immédiatement l'acheteur sur le tchat en direct
+        window.location.href = "achat-en-ligne.html";
+    }
+</script>
+</body>
+</html>

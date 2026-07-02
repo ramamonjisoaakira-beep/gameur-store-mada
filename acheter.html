@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'offre - Gameur Store Mada</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Gameur Store Madagascar</h1>
+        <p><a href="index.html" style="color: #ff0000; text-decoration: none;"> Retour aux offres</a></p>
+    </header>
+
+    <main style="max-width: 800px; margin: 40px auto; padding: 20px; background-color: #111; border-radius: 8px;">
+        <div id="details-produit">
+            </div>
+    </main>
+
+    <script>
+        // 1. Récupérer l'annonce sur laquelle on a cliqué depuis l'accueil
+        const annonce = JSON.parse(localStorage.getItem('annonceSelectionnee'));
+        const zoneDetails = document.getElementById('details-produit');
+
+        if (annonce) {
+            // Nettoyage du numéro pour WhatsApp
+            const numPropre = annonce.telephone.replace(/\s+/g, '');
+            const messageWhatsApp = encodeURIComponent(`Bonjour, je suis intéressé par votre compte ${annonce.titre}`);
+            const lienwhatsapp = `https://wa.me/${numPropre}?text=${messageWhatsApp}`;
+
+            // 2. On injecte les vraies infos du client dans la page
+            zoneDetails.innerHTML = `
+                <h2 style="color: #e5b800; margin-bottom: 20px; font-size: 26px;">${annonce.titre}</h2>
+
+                <div style="text-align: center; background: #000; padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+                    <video src="${annonce.video || 'https://www.w3schools.com/html/mov_bbb.mp4'}" controls autoplay loop muted playsinline style="max-width: 100%; max-height: 450px; border-radius: 4px;">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+
+                <h3 style="color: #ff0000; border-left: 5px solid #ff0000; padding-left: 10px; margin-top: 25px; margin-bottom: 15px;">
+                    Description du vendeur
+                </h3>
+                <p style="color: #ccc; font-size: 16px; line-height: 1.6; white-space: pre-line; margin-bottom: 25px;">
+                    ${annonce.description}
+                </p>
+
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <button onclick="ouvrirGalerie()" style="background: #e5b800; color: #000; font-weight: bold; border: none; padding: 12px 25px; font-size: 16px; border-radius: 5px; cursor: pointer;">
+                        📸 Voir les photos du vendeur
+                    </button>
+                </div>
+
+                <div id="galerie-photos" style="display: none; flex-wrap: nowrap; overflow-x: auto; gap: 10px; padding: 10px; background: #151515; border-radius: 6px; margin-bottom: 25px;">
+                    ${Array.isArray(annonce.image) ? 
+                        annonce.image.map(imgSrc => `<img src="${imgSrc}" style="width: 250px; height: 150px; object-fit: cover; border-radius: 4px; flex-shrink: 0;">`).join('') 
+                        : `<img src="${annonce.image}" style="width: 250px; height: 150px; object-fit: cover; border-radius: 4px; flex-shrink: 0;">`
+                    }
+                </div>
+
+                <div style="background: #1c1c1c; padding: 20px; border-radius: 6px; border: 1px solid #333; margin-top: 20px;">
+                    <p style="color: #aaa; margin-top: 0; font-size: 15px;">
+                        Contact direct du vendeur : <strong style="color: #fff;">${annonce.telephone}</strong>
+                    </p>
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
+                        <a href="tel:${annonce.telephone}" style="background: #ff0000; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                            📞 Appeler le vendeur
+                        </a>
+                        <a href="${lienwhatsapp}" target="_blank" style="background: #25D366; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                            💬 Acheter via WhatsApp
+                        </a>
+                        <a href="option.html" style="background: #ba00ba; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; font-size: 14px; border: 1px solid #fff; box-shadow: 0 0 10px rgba(186, 0, 186, 0.4); white-space: nowrap;">
+                                🛒 Acheter Direct
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Message de secours si on arrive sur la page sans avoir cliqué sur une pub
+            zoneDetails.innerHTML = `<p style="color: #ff0000; text-align: center;">Aucune annonce sélectionnée</p>`;
+        }
+
+        // Fonction pour afficher / masquer la galerie photo
+        function ouvrirGalerie() {
+            const galerie = document.getElementById('galerie-photos');
+            if (galerie.style.display === "none") {
+                galerie.style.display = "flex";
+            } else {
+                galerie.style.display = "none";
+            }
+        }
+    </script>
+
+    <div class="profil-vendeur" style="display: flex; align-items: center; gap: 15px; margin: 20px auto; padding: 10px; max-width: 800px; background: #111; border-radius: 8px;">
+        <img id="avatar-vendeur" src="https://via.placeholder.com/50" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">
+        <div>
+            <h4 id="nom-vendeur" style="margin: 0; color: #ffcc00;">Chargement...</h4>
+            <div style="margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+                <div id="zone-etoiles" style="display: flex; gap: 2px; pointer-events: none; opacity: 0.5;">
+                    <span class="star" data-val="1" style="color: #555; font-size: 18px; cursor: not-allowed;">★</span>
+                    <span class="star" data-val="2" style="color: #555; font-size: 18px; cursor: not-allowed;">★</span>
+                    <span class="star" data-val="3" style="color: #555; font-size: 18px; cursor: not-allowed;">★</span>
+                    <span class="star" data-val="4" style="color: #555; font-size: 18px; cursor: not-allowed;">★</span>
+                    <span class="star" data-val="5" style="color: #555; font-size: 18px; cursor: not-allowed;">★</span>
+                </div>
+                <span id="note-text" style="color: #aaa; font-size: 12px; margin-left: 5px;">(En attente d'achats)</span>
+            </div>
+            <small id="info-vote" style="color: #ff3333; display: block; margin-top: 2px;">Contactez le vendeur pour évaluer</small>
+        </div>
+    </div>
+
+    <script>
+        const annonceStockee = localStorage.getItem('produitSelectionne');
+        if (annonceStockee) {
+            const annonceDetails = JSON.parse(annonceStockee);
+            document.getElementById('nom-vendeur').innerText = annonceDetails.nomVendeur || "Vendeur Anonyme";
+        }
+    </script>
+
+</body>
+</html>

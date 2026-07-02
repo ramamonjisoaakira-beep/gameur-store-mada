@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameur Store Madagascar - Attaque des Titans</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1>Gameur Store Madagascar</h1>
+            <nav>
+                <ul>
+                    <li><a href="ajouter.html">Publier</a></li>
+                    <li><a href="offre.html">Nos offre </a></li>
+                    <li><a href="propos.html">A propos</a></li>
+                    <li><a href="index.html" class="active">Accueil</a></li>
+                    <li><a href="connex.html">Connexion</a></li>
+                </ul>
+            </nav>
+            <div class="search-container">
+                <input type="text" id="barreRecherche" placeholder="Rechercher...">
+                <button type="submit" id="boutonRechercher">Rechercher</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="fond">
+        <h3 class="intro-title">Introduction</h3>
+        <p class="tyko">
+            « Tongasoa ato aminny pejinny Gameur Store Mada. Natao ho anareo mpivarotra compty sy ividy compty Pubg izay mipetraka eto Madagascar irery ihany ho fisoroana ireo halatra sy fisolokiana samy haha ny antony hijorany pejy ka manasa anao ary anaraka ireo lamina efa nampetraka na ijery ireo compty tsara maro samihafa »
+        </p>
+    </div>
+
+    <h2 class="decouvrir">Découvrir nos offres</h2>
+<div class="gallery" id="container-annonces">
+    </div>
+<footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-col">
+                    <h3>Gameur Store Mada</h3>
+                    <p>La plateforme de référence à Madagascar pour l'achat et la vente sécurisée de comptes PUBG Mobile. Pas d'arnaque, que du fiable.</p>
+                    <p class="security-status"><strong>Statut :</strong> 100% Sécurisé <span class="badge">MG</span></p>
+                </div>
+                <div class="footer-col">
+                    <h3>Liens utiles</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Découvrir nos offres</a></li>
+                        <li><a href="acheter.html">Comment acheter ?</a></li>
+                        <li><a href="vente.html">Vendre un compte</a></li>
+                        <li><a href="regle.html">Règles &amp; Sécurité</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Paiement &amp; Contact</h3>
+                    <p><strong>Transactions :</strong><br>Mvola, Airtel Money, Orange Money, Espèces</p>
+                    <p><strong>Contact :</strong><br>Rejoignez-nous sur notre page officielle : Gameur Store Madagascar</p>
+                    
+                    <a href="https://www.facebook.com/ton_lien_ici" target="_blank" class="facebook-link"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Gameur Store Madagascar. Tous droits réservés.</p>
+                <p class="credits">Créé par MARCO</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let bouton = document.getElementById('boutonRechercher');
+        let barre = document.getElementById('barreRecherche');
+
+        if (bouton && barre) {
+            bouton.addEventListener('click', function(evenement) {
+                evenement.preventDefault(); // Évite le rechargement de la page
+
+                let motCle = barre.value.toLowerCase().trim();
+                let listesComptes = document.querySelectorAll('.carte-compte');
+
+                listesComptes.forEach(function(compte) {
+                    let description = compte.getAttribute('data-description');
+                    if (!description) description = "";
+                    description = description.toLowerCase();
+
+                    if (motCle === "" || description.includes(motCle)) {
+                        compte.style.display = "block"; // Affiche l'élément
+                    } else {
+                        compte.style.display = "none";  // Cache l'élément
+                    }
+                });
+            });
+        }
+    });
+    </script>
+    <script>
+    // Le site va lire ce que les clients ont envoyé via le formulaire
+    const annoncesClients = JSON.parse(localStorage.getItem('annoncesClients')) || [
+        // Annonces par défaut si la mémoire est vide
+        {
+            titre: "Exemple : Compte PUBG",
+            description: "Ceci est un exemple. Vos clients verront leurs propres annonces ici.",
+            telephone: "+261340000000",
+            image: "image/Capture d’écran (368).png"
+        }
+    ];
+
+    const container = document.getElementById('container-annonces');
+    container.innerHTML = "";
+
+    annoncesClients.forEach(annonce => {
+        const lienWhatsapp = `https://wa.me/${annonce.telephone.replace(/\s+/g, '')}`;
+
+        container.innerHTML += `
+            <div class="gallery-item carte-compte" style="background-color: #121214; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden;">
+                <img src="${annonce.image}" alt="${annonce.titre}" style="width: 100%; height: 180px; object-fit: cover;">
+                
+                <div class="card-body" style="padding: 15px; color: #fff;">
+                    <div class="titre" style="color: #e5b800; font-weight: bold; margin-bottom: 8px;">${annonce.titre}</div>
+                    <div class="caption" style="font-size: 14px; color: #ccc; margin-bottom: 15px; min-height: 45px;">${annonce.description}</div>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <a href="tel:${annonce.telephone}" style="flex: 1; background: #ff0000; color: #fff; text-align: center; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">📞 Appeler</a>
+                        <a href="${lienWhatsapp}" target="_blank" style="flex: 1; background: #25D366; color: #fff; text-align: center; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">💬 WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    annoncesClients.forEach((annonce, index) => {
+    const lienWhatsapp = `https://wa.me/${annonce.telephone.replace(/\s+/g, '')}`;
+
+    container.innerHTML += `
+        <div class="gallery-item carte-compte" 
+             style="background-color: #121214; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer;"
+             onclick="ouvrirDetails(${index})">
+            
+            <img src="${annonce.image}" alt="${annonce.titre}" style="width: 100%; height: 180px; object-fit: cover;">
+            
+            <div class="card-body" style="padding: 15px; color: #fff;">
+                <div class="titre" style="color: #e5b800; font-weight: bold; margin-bottom: 8px;">${annonce.titre}</div>
+                <div class="caption" style="font-size: 14px; color: #ccc; margin-bottom: 15px; min-height: 45px;">${annonce.description}</div>
+                
+                <div style="display: flex; gap: 8px;" onclick="event.stopPropagation();">
+                    <a href="tel:${annonce.telephone}" style="flex: 1; background: #ff0000; color: #fff; text-align: center; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">📞 Appeler</a>
+                    <a href="${lienWhatsapp}" target="_blank" style="flex: 1; background: #25D366; color: #fff; text-align: center; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">💬 WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    `;
+});
+
+// Cette fonction magique mémorise sur quelle pub on a cliqué et ouvre la page acheter.html
+function ouvrirDetails(index) {
+    const annonces = JSON.parse(localStorage.getItem('annoncesClients')) || [];
+    // Si la liste locale est vide, on prend celle par défaut
+    const selection = annonces[index] || annoncesClients[index];
+    
+    localStorage.setItem('annonceSelectionnee', JSON.stringify(selection));
+    window.location.href = 'acheter.html';
+}
+</script>
+</body>
+</html>

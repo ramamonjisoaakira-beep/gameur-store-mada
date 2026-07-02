@@ -1,0 +1,195 @@
+/* --- CONFIGURATION DE BASE --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #06070a; /* Fond ultra-noir */
+    color: #00f2ff; /* Couleur Cyan Gaming par défaut */
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- ANIMATIONS KEYFRAMES --- */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dropDown {
+    from { opacity: 0; transform: translateY(-100px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes neonPulse {
+    0%, 100% { text-shadow: 0 0 10px #c114dc, 0 0 20px #c114dc; }
+    50% { text-shadow: 0 0 20px #c114dc, 0 0 40px #ff00ff; }
+}
+
+@keyframes btnGlow {
+    0% { box-shadow: 0 0 5px #c114dc; }
+    50% { box-shadow: 0 0 20px #c114dc; }
+    100% { box-shadow: 0 0 5px #c114dc; }
+}
+
+/* --- HEADER GAMING --- */
+header {
+    background-image: url('image/2250136.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 4rem 2rem;
+    position: relative;
+    border-bottom: 2px solid #c114dc;
+    animation: dropDown 1s ease-out;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), #06070a);
+    z-index: 1;
+}
+
+.header-content { position: relative; z-index: 2; }
+
+h1.glitch-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 15px;
+    animation: neonPulse 2s infinite;
+}
+
+/* Navigation animée */
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+nav li {
+    opacity: 0;
+    animation: slideUp 0.5s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.1s); /* Apparition un par un */
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+nav a:hover, nav a.active {
+    border: 1px solid #c114dc;
+    color: #c114dc;
+    background: rgba(193, 20, 220, 0.1);
+}
+
+/* --- FORMULAIRE STYLE CONSOLE --- */
+.info {
+    background: rgba(22, 25, 32, 0.9);
+    max-width: 550px;
+    margin: -50px auto 50px; /* Chevauche le header */
+    padding: 40px;
+    border-radius: 5px;
+    border-left: 4px solid #c114dc;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    position: relative;
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.line {
+    height: 2px;
+    width: 50px;
+    background: #c114dc;
+    margin-bottom: 25px;
+}
+
+/* Inputs Animés */
+.input-group { margin-bottom: 20px; }
+
+label {
+    display: block;
+    color: #c114dc;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="tel"] {
+    width: 100%;
+    background: #0c0d12;
+    border: 1px solid #2d323f;
+    padding: 12px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #00f2ff;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+    transform: translateX(5px); /* Petit décalage au focus */
+}
+
+/* Boutons Gaming */
+.loli { display: flex; gap: 20px; margin-top: 30px; }
+
+.btn-gaming {
+    flex: 1;
+    background: transparent;
+    border: 2px solid #c114dc;
+    color: #fff;
+    padding: 15px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-gaming:hover {
+    background: #c114dc;
+    color: #000;
+    box-shadow: 0 0 20px #c114dc;
+}
+
+.pulse {
+    animation: btnGlow 2s infinite;
+}
+
+.btn-reset {
+    border-color: #444;
+}
+
+.btn-reset:hover {
+    background: #ff0000;
+    border-color: #ff0000;
+}
+
+/* Pied de page */
+.footer-bottom {
+    text-align: center;
+    padding: 20px;
+    background: #06070a;
+    color: #444;
+    font-size: 0.8rem;
+}
