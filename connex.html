@@ -8,54 +8,175 @@
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>SECURE_LOGIN</h2>
-        <form>
-            <label>EMAIL ADDRESS</label>
-            <input type="email" placeholder="email@domain.com" required>
-            
-            <label>PASSWORD</label>
-            <input type="password" placeholder="........" required>
-            
-            <button type="submit">START_SESSION</button>
-        </form>
-        <p>Nouveau joueur ? <a href="#">Créer un compte ici</a></p>
-    </div>
+    <header class="animate-drop">
+        <div class="header-content">
+            </div>
+    </header>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    <main class="container">
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCp3YoJ3y4LUiKhaKwpYWaKrEQ6QBNzeIg",
-    authDomain: "gameur-store-mada.firebaseapp.com",
-    projectId: "gameur-store-mada",
-    storageBucket: "gameur-store-mada.firebasestorage.app",
-    messagingSenderId: "469078679688",
-    appId: "1:469078679688:web:43619b15f7d3a08c78ff3d"
-  };
+        <div id="login-block" class="info animate-slide-up">
+            <div class="form-header">
+                <h2>SECURE_LOGIN</h2>
+                <div class="line"></div>
+            </div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+            <form action="index.html" method="POST">
+                <div class="azert">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="email@domain.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="........" required>
+                    </div>
+                </div>
 
-  const form = document.querySelector("form");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
+                <div class="loli">
+                    <button type="submit" class="btn-gaming pulse">START_SESSION</button>
+                </div>
 
-      const email = document.querySelector('input[type="email"]').value;
-      const password = document.querySelector('input[type="password"]').value;
+                <p class="switch-form">Nouveau joueur ? <a href="#" id="to-register">Créer un compte ici</a></p>
+            </form>
+        </div>
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Inscription réussie ! Bienvenue sur Gameur Store Mada.");
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          alert("Erreur lors de l'inscription : " + error.message);
+        <div id="register-block" class="info animate-slide-up" style="display: none;">
+            <div class="form-header">
+                <h2>NEW_PLAYER_REGISTRATION</h2>
+                <div class="line"></div>
+            </div>
+
+            <form action="index.html" method="POST">
+                <div class="input-group">
+                    <label>NOM ET PRÉNOM</label>
+                    <input type="text" placeholder="Nom complet" required name="nom_complet">
+                </div>
+
+                <div class="input-group">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" placeholder="email@domain.com" required name="email">
+                </div>
+
+                <div class="input-group">
+                    <label>PASSWORD (8 CHARACTERS MIN.)</label>
+                    <input type="password" minlength="8" placeholder="........" required name="password">
+                </div>
+
+                <div class="input-group">
+                    <label>MADAGASCAR PHONE</label>
+                    <input type="tel" pattern="[0-9]{10}" placeholder="034\033\032XXXXXXX" required name="phone">
+                </div>
+
+                <div class="input-group">
+                    <label>LIEN PROFIL FACEBOOK</label>
+                    <input type="text" placeholder="facebook.com/votre.profil" required name="facebook">
+                </div>
+
+                <div class="input-group">
+                    <label>ADRESSE EXACTE (VILLE / QUARTIER / LOT)</label>
+                    <input type="text" placeholder="Ex: Antananarivo, Itaosy, Lot IV..." required name="adresse">
+                </div>
+
+                <div class="input-group" style="text-align: center; margin-bottom: 25px;">
+                    <label style="display: block; text-align: left; margin-bottom: 10px; color: #e11d48;">IDENTIFICATION FLASH (OPTIONNEL)</label>
+                    
+                    <video id="webcam" autoplay playsinline style="width: 100%; max-width: 320px; height: auto; border: 2px solid #e11d48; border-radius: 8px; background-color: #000;"></video>
+                    
+                    <img id="photo-preview" style="display: none; width: 100%; max-width: 320px; height: auto; border: 2px solid #10b981; border-radius: 8px; margin: 0 auto;" />
+                    
+                    <div style="margin-top: 10px;">
+                        <button type="button" id="capture-btn" class="btn-gaming" style="padding: 8px 15px; font-size: 13px;">Prendre une photo</button>
+                        <button type="button" id="retry-btn" class="btn-gaming" style="padding: 8px 15px; font-size: 13px; display: none; background: #475569;">Recommencer</button>
+                    </div>
+                    
+                    <input type="hidden" id="photo-data" name="player_photo">
+                    <canvas id="canvas" style="display:none;"></canvas>
+                </div>
+
+                <div class="radio-box">
+                    <span class="label-neon">SELECT_GENDER:</span>
+                    <div class="radio-group">
+                        <label class="radio-container">
+                            <input type="radio" name="sexe" value="H" checked name="gender"> Homme
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="sexe" value="F" name="gender"> Femme
+                        </label>
+                    </div>
+                </div>
+
+                <div class="loli">
+                    <button type="submit" class="btn-gaming">CREATE_ACCOUNT</button>
+                    <button type="reset" class="btn-gaming btn-reset">RESET</button>
+                </div>
+
+                <p class="switch-form">Déjà un compte ? <a href="#" id="to-login">Se connecter</a></p>
+            </form>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>SYSTEM_READY // &copy; 2026 Gameur Store Mada</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Scripts de bascule d'origine ---
+        const loginBlock = document.getElementById('login-block');
+        const registerBlock = document.getElementById('register-block');
+        const toRegisterLink = document.getElementById('to-register');
+        const toLoginLink = document.getElementById('to-login');
+
+        toRegisterLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginBlock.style.display = 'none';
+            registerBlock.style.display = 'block';
         });
-    });
-  }
-</script>
+
+        toLoginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerBlock.style.display = 'none';
+            loginBlock.style.display = 'block';
+        });
+
+        // --- 2. Script Caméra ---
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const photoPreview = document.getElementById('photo-preview');
+        const photoDataInput = document.getElementById('photo-data');
+
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => { console.log("Caméra non disponible ou bloquée."); });
+
+        captureBtn.addEventListener('click', function() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+            
+            const dataURL = canvas.toDataURL('image/png');
+            photoDataInput.value = dataURL;
+            photoPreview.src = dataURL;
+            
+            video.style.display = 'none';
+            photoPreview.style.display = 'block';
+            captureBtn.style.display = 'none';
+            retryBtn.style.display = 'inline-block';
+        });
+
+        retryBtn.addEventListener('click', function() {
+            photoDataInput.value = "";
+            photoPreview.style.display = 'none';
+            video.style.display = 'inline-block';
+            captureBtn.style.display = 'inline-block';
+            retryBtn.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
