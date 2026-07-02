@@ -130,24 +130,25 @@
   </footer>
 
   <script type="module">
-    // --- IMPORTATION MODULES FIREBASE ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // --- CONFIGURATION FIREBASE (REMETS TES VRAIES CLES ICI) ---
+    // Configuration Firebase issue de ta capture d'écran 684
     const firebaseConfig = {
-      apiKey: "TON_API_KEY",
-      authDomain: "TON_AUTH_DOMAIN",
-      projectId: "TON_PROJECT_ID",
-      storageBucket: "TON_STORAGE_BUCKET",
-      messagingSenderId: "TON_MESSAGING_SENDER_ID",
-      appId: "TON_APP_ID"
+      apiKey: "AIzaSyCp3YoJ3y4LUiKhaKwpyWaKrEQ6QBnzeIg",
+      authDomain: "gameur-store-mada.firebaseapp.com",
+      projectId: "gameur-store-mada",
+      storageBucket: "gameur-store-mada.firebasestorage.app",
+      messagingSenderId: "469078679688",
+      appId: "1:469078679688:web:43619b15f7d3a08c78ff3d"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // --- 1. SCRIPTS DE BASCULE D'ONGLETS (LOGIN / REGISTER) ---
+    // --- BASCULE D'ONGLETS ---
     const loginBlock = document.getElementById('login-block');
     const registerBlock = document.getElementById('register-block');
     const toRegisterLink = document.getElementById('to-register');
@@ -167,7 +168,7 @@
       });
     }
 
-    // --- 2. SCRIPT DE LA CAMERA / WEBCAM ---
+    // --- SCRIPT CAMERA ---
     const video = document.getElementById('webcam');
     const canvas = document.getElementById('canvas');
     const captureBtn = document.getElementById('capture-btn');
@@ -178,7 +179,7 @@
     if (video) {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => { video.srcObject = stream; })
-        .catch(err => { console.log("Caméra indisponible ou refusée : ", err); });
+        .catch(err => { console.log("Caméra indisponible : ", err); });
     }
 
     if (captureBtn && retryBtn) {
@@ -189,7 +190,7 @@
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         const dataURL = canvas.toDataURL('image/png');
-        photoDataInput.value = dataURL;
+        if(photoDataInput) photoDataInput.value = dataURL;
         photoPreview.src = dataURL;
 
         video.style.display = 'none';
@@ -199,7 +200,7 @@
       });
 
       retryBtn.addEventListener('click', () => {
-        photoDataInput.value = "";
+        if(photoDataInput) photoDataInput.value = "";
         photoPreview.style.display = 'none';
         video.style.display = 'inline-block';
         captureBtn.style.display = 'inline-block';
@@ -207,19 +208,18 @@
       });
     }
 
-    // --- 3. TRAITEMENT FORMULAIRE DE CONNEXION (FIREBASE + VERIFICATION EMAIL) ---
+    // --- FORMULAIRE DE CONNEXION ---
     const loginForm = loginBlock ? loginBlock.querySelector('form') : null;
     if (loginForm) {
       loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = loginForm.querySelector('input[type="email"]').value;
-        const password = loginForm.querySelector('input[type="password"]').value;
+        const email = loginForm.querySelectorAll('input')[0].value;
+        const password = loginForm.querySelectorAll('input')[1].value;
 
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
 
-            // Vérifie si l'utilisateur a validé son email
             if (user.emailVerified) {
               alert("Connexion réussie ! Bienvenue sur Gameur Store Mada.");
               window.location.href = "index.html";
@@ -231,42 +231,63 @@
             }
           })
           .catch(error => { alert("Erreur de connexion : " + error.message); });
-      });
-    }
+    });
+  }
 
-    // --- 4. TRAITEMENT FORMULAIRE D'INSCRIPTION (FIREBASE + ENVOI EMAIL DE VALIDATION) ---
-    const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
-    if (registerForm) {
-      registerForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = registerForm.querySelector('input[type="email"]').value;
-        const password = registerForm.querySelector('input[type="password"]').value;
+  // --- FORMULAIRE D'INSCRIPTION + STOCKAGE FIRESTORE ---
+  const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            const user = userCredential.user;
+      const inputs = registerForm.querySelectorAll('input');
+      const nom = inputs[0].value;
+      const prenom = inputs[1].value;
+      const email = inputs[2].value;
+      const password = inputs[3].value;
+      const phone = inputs[4].value;
+      const facebook = inputs[5].value;
+      const adresse = inputs[6].value;
+      const photoBase64 = photoDataInput ? photoDataInput.value : "";
+      
+      const optionSelected = registerForm.querySelector('input[name="option-joueur"]:checked');
+      const optionJoueur = optionSelected ? optionSelected.value : "Aucune";
 
-            // Envoi de l'e-mail de confirmation
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          // Sauvegarde dans Firestore dans la collection "utilisateurs"
+          setDoc(doc(db, "utilisateurs", user.uid), {
+            nom: nom,
+            prenom: prenom,
+            email: email,
+            telephone: phone,
+            facebook: facebook,
+            adresse: adresse,
+            photo: photoBase64,
+            option: optionJoueur,
+            createdAt: new Date().toISOString()
+          })
+          .then(() => {
             import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js")
               .then(({ sendEmailVerification, signOut }) => {
                 sendEmailVerification(user)
                   .then(() => {
-                    alert("Un e-mail de validation vous a été envoyé ! Veuillez vérifier votre boîte de réception avant de vous connecter.");
-                    
+                    alert("Inscription réussie et profil enregistré ! Un e-mail de validation vous a été envoyé.");
                     signOut(auth).then(() => {
-                      // On force la bascule visuelle vers le bloc de connexion pour qu'il s'y connecte après validation
                       registerBlock.style.display = 'none';
                       loginBlock.style.display = 'block';
                     });
                   })
-                  .catch((error) => {
-                    alert("Erreur lors de l'envoi de l'e-mail de validation : " + error.message);
-                  });
+                  .catch(err => alert("Erreur d'envoi d'e-mail : " + err.message));
               });
           })
-          .catch(error => { alert("Erreur d'inscription : " + error.message); });
-      });
-    }
-  </script>
+          .catch(err => alert("Erreur base de données Firestore : " + err.message));
+        })
+        .catch(error => alert("Erreur d'inscription : " + error.message));
+    });
+  }
+</script>
 </body>
 </html>
