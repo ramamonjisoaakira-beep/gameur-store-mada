@@ -122,61 +122,118 @@
             <p>SYSTEM_READY // &copy; 2026 Gameur Store Mada</p>
         </div>
     </footer>
+<script type="module">
+  // 1. Connexion avec les serveurs Firebase de Google
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    <script>
-        // --- 1. Scripts de bascule d'origine ---
-        const loginBlock = document.getElementById('login-block');
-        const registerBlock = document.getElementById('register-block');
-        const toRegisterLink = document.getElementById('to-register');
-        const toLoginLink = document.getElementById('to-login');
+  // 2. Configuration Firebase (La liaison vers ton projet)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCp3YoJ3y4LUiKhaKwpYWaKrEQ6QBNzeIg",
+    authDomain: "gameur-store-mada.firebaseapp.com",
+    projectId: "gameur-store-mada",
+    storageBucket: "gameur-store-mada.firebasestorage.app",
+    messagingSenderId: "469078679688",
+    appId: "1:469078679688:web:43619b15f7d3a08c78ff3d"
+  };
 
-        toRegisterLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            loginBlock.style.display = 'none';
-            registerBlock.style.display = 'block';
-        });
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-        toLoginLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            registerBlock.style.display = 'none';
-            loginBlock.style.display = 'block';
-        });
+  // 3. Tes scripts d'origine pour changer de formulaire (Connexion / Inscription)
+  const loginBlock = document.getElementById('login-block');
+  const registerBlock = document.getElementById('register-block');
+  const toRegisterLink = document.getElementById('to-register');
+  const toLoginLink = document.getElementById('to-login');
 
-        // --- 2. Script Caméra ---
-        const video = document.getElementById('webcam');
-        const canvas = document.getElementById('canvas');
-        const captureBtn = document.getElementById('capture-btn');
-        const retryBtn = document.getElementById('retry-btn');
-        const photoPreview = document.getElementById('photo-preview');
-        const photoDataInput = document.getElementById('photo-data');
+  if (toRegisterLink && toLoginLink) {
+    toRegisterLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginBlock.style.display = 'none';
+      registerBlock.style.display = 'block';
+    });
 
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-            .then(stream => { video.srcObject = stream; })
-            .catch(err => { console.log("Caméra non disponible ou bloquée."); });
+    toLoginLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      registerBlock.style.display = 'none';
+      loginBlock.style.display = 'block';
+    });
+  }
 
-        captureBtn.addEventListener('click', function() {
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-            
-            const dataURL = canvas.toDataURL('image/png');
-            photoDataInput.value = dataURL;
-            photoPreview.src = dataURL;
-            
-            video.style.display = 'none';
-            photoPreview.style.display = 'block';
-            captureBtn.style.display = 'none';
-            retryBtn.style.display = 'inline-block';
-        });
+  // 4. Ton script d'origine pour l'activation de la Caméra
+  const video = document.getElementById('webcam');
+  const canvas = document.getElementById('canvas');
+  const captureBtn = document.getElementById('capture-btn');
+  const retryBtn = document.getElementById('retry-btn');
+  const photoPreview = document.getElementById('photo-preview');
+  const photoDataInput = document.getElementById('photo-data');
 
-        retryBtn.addEventListener('click', function() {
-            photoDataInput.value = "";
-            photoPreview.style.display = 'none';
-            video.style.display = 'inline-block';
-            captureBtn.style.display = 'inline-block';
-            retryBtn.style.display = 'none';
-        });
-    </script>
+  if (video) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; })
+      .catch(err => { console.log("Caméra non accessible"); });
+  }
+
+  if (captureBtn && canvas && video) {
+    captureBtn.addEventListener('click', function() {
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+      const dataURL = canvas.toDataURL('image/png');
+      if (photoDataInput) photoDataInput.value = dataURL;
+      if (photoPreview) photoPreview.src = dataURL;
+
+      video.style.display = 'none';
+      if (photoPreview) photoPreview.style.display = 'block';
+      captureBtn.style.display = 'none';
+      if (retryBtn) retryBtn.style.display = 'inline-block';
+    });
+  }
+
+  if (retryBtn && video) {
+    retryBtn.addEventListener('click', function() {
+      if (photoDataInput) photoDataInput.value = "";
+      if (photoPreview) photoPreview.style.display = 'none';
+      video.style.display = 'inline-block';
+      if (captureBtn) captureBtn.style.display = 'inline-block';
+      retryBtn.style.display = 'none';
+    });
+  }
+
+  // 5. Envoi des données à Firebase lors du clic sur les formulaires
+  const loginForm = loginBlock ? loginBlock.querySelector('form') : null;
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = loginForm.querySelector('input[type="email"]').value;
+      const password = loginForm.querySelector('input[type="password"]').value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("Connexion réussie ! Content de vous revoir.");
+          window.location.href = "index.html";
+        })
+        .catch(error => { alert("Erreur : " + error.message); });
+    });
+  }
+
+  const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = registerForm.querySelector('input[type="email"]').value;
+      const password = registerForm.querySelector('input[type="password"]').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("Inscription réussie ! Bienvenue sur Gameur Store Mada.");
+          window.location.href = "index.html";
+        })
+        .catch(error => { alert("Erreur : " + error.message); });
+    });
+  }
+</script>
 </body>
 </html>
