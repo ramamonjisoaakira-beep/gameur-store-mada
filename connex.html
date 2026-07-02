@@ -1,239 +1,272 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamer Store - Login & Register</title>
-    <link rel="stylesheet" href="connex.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamer Store - Login & Register</title>
+  <link rel="stylesheet" href="connex.css">
 </head>
 <body>
 
-    <header class="animate-drop">
-        <div class="header-content">
-            </div>
-    </header>
+  <header class="animate-drop">
+    <div class="header-content">
+      <div></div>
+    </div>
+  </header>
 
-    <main class="container">
+  <main class="container">
+    
+    <div id="login-block" class="info animate">
+      <div class="form-header">
+        <h2>SECURE_LOGIN</h2>
+        <div class="class=line"></div>
+      </div>
 
-        <div id="login-block" class="info animate-slide-up">
-            <div class="form-header">
-                <h2>SECURE_LOGIN</h2>
-                <div class="line"></div>
-            </div>
-
-            <form action="index.html" method="POST">
-                <div class="azert">
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="email@domain.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" placeholder="........" required>
-                    </div>
-                </div>
-
-                <div class="loli">
-                    <button type="submit" class="btn-gaming pulse">START_SESSION</button>
-                </div>
-
-                <p class="switch-form">Nouveau joueur ? <a href="#" id="to-register">Créer un compte ici</a></p>
-            </form>
+      <form action="index.html" method="POST">
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="email@domain.com" required>
         </div>
 
-        <div id="register-block" class="info animate-slide-up" style="display: none;">
-            <div class="form-header">
-                <h2>NEW_PLAYER_REGISTRATION</h2>
-                <div class="line"></div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" placeholder="........" required>
+        </div>
+
+        <div class="class=loli">
+          <button type="submit" class="btn-submit">SE CONNECTER</button>
+        </div>
+
+        <p class="switch-form">Nouveau joueur ? <a href="#" id="to-register">Créer un compte</a></p>
+      </form>
+    </div>
+
+    <div id="register-block" class="info animate" style="display: none;">
+      <div class="form-header">
+        <h2>NEW_PLAYER_REGISTRATION</h2>
+      </div>
+
+      <form action="index.html" method="POST">
+        <div class="class=azert">
+          
+          <div class="input-group">
+            <label>NOM</label>
+            <input type="text" placeholder="Nom complet" required>
+          </div>
+
+          <div class="input-group">
+            <label>PRÉNOM</label>
+            <input type="text" placeholder="Entrez votre prenom" required>
+          </div>
+
+          <div class="input-group">
+            <label>EMAIL ADDRESS</label>
+            <input type="email" placeholder="email@domain.com" required>
+          </div>
+
+          <div class="input-group">
+            <label>PASSWORD (8 CHARACTERS MIN.)</label>
+            <input type="password" placeholder="........" minlength="8" required>
+          </div>
+
+          <div class="input-group">
+            <label>MADAGASCAR PHONE</label>
+            <input type="tel" placeholder="034\033\032XXXXXXX" required>
+          </div>
+
+          <div class="input-group">
+            <label>LIEN PROFIL FACEBOOK</label>
+            <input type="text" placeholder="facebook.com/votre.profil" required>
+          </div>
+
+          <div class="input-group">
+            <label>ADRESSE EXACTE (VILLE / QUARTIER / LOT)</label>
+            <input type="text" placeholder="Ex: Antananarivo, Itaosy, Lot IV..." required>
+          </div>
+
+          <div class="input-group" style="text-align: center;">
+            <label style="display: block;">IDENTIFICATION FLASH (OPTIONNEL)</label>
+            <video id="webcam" autoplay playsinline width="100%" style="border-radius: 4px; background: #000;"></video>
+            <img id="photo-preview" style="display: none; width: 100%; border-radius: 4px;" src="">
+            
+            <div style="margin-top: 10px;">
+              <button type="button" id="capture-btn">Prendre la photo</button>
+              <button type="button" id="retry-btn" style="display: none;">Recommencer</button>
             </div>
+            
+            <input type="hidden" id="photo-data">
+            <canvas id="canvas" style="display: none;"></canvas>
+          </div>
 
-            <form action="index.html" method="POST">
-                <div class="input-group">
-                    <label>NOM ET PRÉNOM</label>
-                    <input type="text" placeholder="Nom complet" required name="nom_complet">
-                </div>
+          <div class="class=radio-box">
+            <span class="class=radio-neon">SÉLECTION</span>
+            <div class="class=radio-group">
+              <label class="class=radio-container">
+                <input type="radio" name="option-joueur" value="1"> Option 1
+              </label>
+              <label class="class=radio-container">
+                <input type="radio" name="option-joueur" value="2"> Option 2
+              </label>
+            </div>
+          </div>
 
-                <div class="input-group">
-                    <label>EMAIL ADDRESS</label>
-                    <input type="email" placeholder="email@domain.com" required name="email">
-                </div>
-
-                <div class="input-group">
-                    <label>PASSWORD (8 CHARACTERS MIN.)</label>
-                    <input type="password" minlength="8" placeholder="........" required name="password">
-                </div>
-
-                <div class="input-group">
-                    <label>MADAGASCAR PHONE</label>
-                    <input type="tel" pattern="[0-9]{10}" placeholder="034\033\032XXXXXXX" required name="phone">
-                </div>
-
-                <div class="input-group">
-                    <label>LIEN PROFIL FACEBOOK</label>
-                    <input type="text" placeholder="facebook.com/votre.profil" required name="facebook">
-                </div>
-
-                <div class="input-group">
-                    <label>ADRESSE EXACTE (VILLE / QUARTIER / LOT)</label>
-                    <input type="text" placeholder="Ex: Antananarivo, Itaosy, Lot IV..." required name="adresse">
-                </div>
-
-                <div class="input-group" style="text-align: center; margin-bottom: 25px;">
-                    <label style="display: block; text-align: left; margin-bottom: 10px; color: #e11d48;">IDENTIFICATION FLASH (OPTIONNEL)</label>
-                    
-                    <video id="webcam" autoplay playsinline style="width: 100%; max-width: 320px; height: auto; border: 2px solid #e11d48; border-radius: 8px; background-color: #000;"></video>
-                    
-                    <img id="photo-preview" style="display: none; width: 100%; max-width: 320px; height: auto; border: 2px solid #10b981; border-radius: 8px; margin: 0 auto;" />
-                    
-                    <div style="margin-top: 10px;">
-                        <button type="button" id="capture-btn" class="btn-gaming" style="padding: 8px 15px; font-size: 13px;">Prendre une photo</button>
-                        <button type="button" id="retry-btn" class="btn-gaming" style="padding: 8px 15px; font-size: 13px; display: none; background: #475569;">Recommencer</button>
-                    </div>
-                    
-                    <input type="hidden" id="photo-data" name="player_photo">
-                    <canvas id="canvas" style="display:none;"></canvas>
-                </div>
-
-                <div class="radio-box">
-                    <span class="label-neon">SELECT_GENDER:</span>
-                    <div class="radio-group">
-                        <label class="radio-container">
-                            <input type="radio" name="sexe" value="H" checked name="gender"> Homme
-                        </label>
-                        <label class="radio-container">
-                            <input type="radio" name="sexe" value="F" name="gender"> Femme
-                        </label>
-                    </div>
-                </div>
-
-                <div class="loli">
-                    <button type="submit" class="btn-gaming">CREATE_ACCOUNT</button>
-                    <button type="reset" class="btn-gaming btn-reset">RESET</button>
-                </div>
-
-                <p class="switch-form">Déjà un compte ? <a href="#" id="to-login">Se connecter</a></p>
-            </form>
         </div>
 
-    </main>
-
-    <footer>
-        <div class="footer-bottom">
-            <p>SYSTEM_READY // &copy; 2026 Gameur Store Mada</p>
+        <div class="class=loli">
+          <button type="submit">S'INSCRIRE</button>
+          <button type="reset">EFFACER</button>
         </div>
-    </footer>
-<script type="module">
-  // 1. Connexion avec les serveurs Firebase de Google
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // 2. Configuration Firebase (La liaison vers ton projet)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCp3YoJ3y4LUiKhaKwpYWaKrEQ6QBNzeIg",
-    authDomain: "gameur-store-mada.firebaseapp.com",
-    projectId: "gameur-store-mada",
-    storageBucket: "gameur-store-mada.firebasestorage.app",
-    messagingSenderId: "469078679688",
-    appId: "1:469078679688:web:43619b15f7d3a08c78ff3d"
-  };
+        <p class="switch-form">Déjà un compte ? <a href="#" id="to-login">Se connecter</a></p>
+      </form>
+    </div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  </main>
 
-  // 3. Tes scripts d'origine pour changer de formulaire (Connexion / Inscription)
-  const loginBlock = document.getElementById('login-block');
-  const registerBlock = document.getElementById('register-block');
-  const toRegisterLink = document.getElementById('to-register');
-  const toLoginLink = document.getElementById('to-login');
+  <footer>
+    <div class="class=footer-bottom">
+      <p>SYSTEM_READY // &copy; 2026 Gamer Store Mada.</p>
+    </div>
+  </footer>
 
-  if (toRegisterLink && toLoginLink) {
-    toRegisterLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      loginBlock.style.display = 'none';
-      registerBlock.style.display = 'block';
-    });
+  <script type="module">
+    // --- IMPORTATION MODULES FIREBASE ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    toLoginLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      registerBlock.style.display = 'none';
-      loginBlock.style.display = 'block';
-    });
-  }
+    // --- CONFIGURATION FIREBASE (REMETS TES VRAIES CLES ICI) ---
+    const firebaseConfig = {
+      apiKey: "TON_API_KEY",
+      authDomain: "TON_AUTH_DOMAIN",
+      projectId: "TON_PROJECT_ID",
+      storageBucket: "TON_STORAGE_BUCKET",
+      messagingSenderId: "TON_MESSAGING_SENDER_ID",
+      appId: "TON_APP_ID"
+    };
 
-  // 4. Ton script d'origine pour l'activation de la Caméra
-  const video = document.getElementById('webcam');
-  const canvas = document.getElementById('canvas');
-  const captureBtn = document.getElementById('capture-btn');
-  const retryBtn = document.getElementById('retry-btn');
-  const photoPreview = document.getElementById('photo-preview');
-  const photoDataInput = document.getElementById('photo-data');
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  if (video) {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => { video.srcObject = stream; })
-      .catch(err => { console.log("Caméra non accessible"); });
-  }
+    // --- 1. SCRIPTS DE BASCULE D'ONGLETS (LOGIN / REGISTER) ---
+    const loginBlock = document.getElementById('login-block');
+    const registerBlock = document.getElementById('register-block');
+    const toRegisterLink = document.getElementById('to-register');
+    const toLoginLink = document.getElementById('to-login');
 
-  if (captureBtn && canvas && video) {
-    captureBtn.addEventListener('click', function() {
-      const context = canvas.getContext('2d');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    if(toRegisterLink && toLoginLink) {
+      toRegisterLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginBlock.style.display = 'none';
+        registerBlock.style.display = 'block';
+      });
 
-      const dataURL = canvas.toDataURL('image/png');
-      if (photoDataInput) photoDataInput.value = dataURL;
-      if (photoPreview) photoPreview.src = dataURL;
+      toLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        registerBlock.style.display = 'none';
+        loginBlock.style.display = 'block';
+      });
+    }
 
-      video.style.display = 'none';
-      if (photoPreview) photoPreview.style.display = 'block';
-      captureBtn.style.display = 'none';
-      if (retryBtn) retryBtn.style.display = 'inline-block';
-    });
-  }
+    // --- 2. SCRIPT DE LA CAMERA / WEBCAM ---
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const retryBtn = document.getElementById('retry-btn');
+    const photoPreview = document.getElementById('photo-preview');
+    const photoDataInput = document.getElementById('photo-data');
 
-  if (retryBtn && video) {
-    retryBtn.addEventListener('click', function() {
-      if (photoDataInput) photoDataInput.value = "";
-      if (photoPreview) photoPreview.style.display = 'none';
-      video.style.display = 'inline-block';
-      if (captureBtn) captureBtn.style.display = 'inline-block';
-      retryBtn.style.display = 'none';
-    });
-  }
+    if (video) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { video.srcObject = stream; })
+        .catch(err => { console.log("Caméra indisponible ou refusée : ", err); });
+    }
 
-  // 5. Envoi des données à Firebase lors du clic sur les formulaires
-  const loginForm = loginBlock ? loginBlock.querySelector('form') : null;
-  if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = loginForm.querySelector('input[type="email"]').value;
-      const password = loginForm.querySelector('input[type="password"]').value;
+    if (captureBtn && retryBtn) {
+      captureBtn.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("Connexion réussie ! Content de vous revoir.");
-          window.location.href = "index.html";
-        })
-        .catch(error => { alert("Erreur : " + error.message); });
-    });
-  }
+        const dataURL = canvas.toDataURL('image/png');
+        photoDataInput.value = dataURL;
+        photoPreview.src = dataURL;
 
-  const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
-  if (registerForm) {
-    registerForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = registerForm.querySelector('input[type="email"]').value;
-      const password = registerForm.querySelector('input[type="password"]').value;
+        video.style.display = 'none';
+        photoPreview.style.display = 'block';
+        captureBtn.style.display = 'none';
+        retryBtn.style.display = 'inline-block';
+      });
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("Inscription réussie ! Bienvenue sur Gameur Store Mada.");
-          window.location.href = "index.html";
-        })
-        .catch(error => { alert("Erreur : " + error.message); });
-    });
-  }
-</script>
+      retryBtn.addEventListener('click', () => {
+        photoDataInput.value = "";
+        photoPreview.style.display = 'none';
+        video.style.display = 'inline-block';
+        captureBtn.style.display = 'inline-block';
+        retryBtn.style.display = 'none';
+      });
+    }
+
+    // --- 3. TRAITEMENT FORMULAIRE DE CONNEXION (FIREBASE + VERIFICATION EMAIL) ---
+    const loginForm = loginBlock ? loginBlock.querySelector('form') : null;
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = loginForm.querySelector('input[type="email"]').value;
+        const password = loginForm.querySelector('input[type="password"]').value;
+
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+
+            // Vérifie si l'utilisateur a validé son email
+            if (user.emailVerified) {
+              alert("Connexion réussie ! Bienvenue sur Gameur Store Mada.");
+              window.location.href = "index.html";
+            } else {
+              alert("Votre adresse e-mail n'a pas encore été validée. Regardez vos e-mails !");
+              import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js").then(({ signOut }) => {
+                signOut(auth);
+              });
+            }
+          })
+          .catch(error => { alert("Erreur de connexion : " + error.message); });
+      });
+    }
+
+    // --- 4. TRAITEMENT FORMULAIRE D'INSCRIPTION (FIREBASE + ENVOI EMAIL DE VALIDATION) ---
+    const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
+    if (registerForm) {
+      registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = registerForm.querySelector('input[type="email"]').value;
+        const password = registerForm.querySelector('input[type="password"]').value;
+
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+
+            // Envoi de l'e-mail de confirmation
+            import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js")
+              .then(({ sendEmailVerification, signOut }) => {
+                sendEmailVerification(user)
+                  .then(() => {
+                    alert("Un e-mail de validation vous a été envoyé ! Veuillez vérifier votre boîte de réception avant de vous connecter.");
+                    
+                    signOut(auth).then(() => {
+                      // On force la bascule visuelle vers le bloc de connexion pour qu'il s'y connecte après validation
+                      registerBlock.style.display = 'none';
+                      loginBlock.style.display = 'block';
+                    });
+                  })
+                  .catch((error) => {
+                    alert("Erreur lors de l'envoi de l'e-mail de validation : " + error.message);
+                  });
+              });
+          })
+          .catch(error => { alert("Erreur d'inscription : " + error.message); });
+      });
+    }
+  </script>
 </body>
 </html>
