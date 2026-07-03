@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de Rachat Officiel - Gameur Store Mada</title>
+    <style>
+        /* --- RESET ET CONFIGURATION DE BASE --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0c10;
+            --bg-card: #12151d;
+            --bg-card-hover: #161a26;
+            --accent-neon: #e11d48;
+            --accent-glow: rgba(225, 29, 72, 0.2);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #1f2937;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- LOGO ET EN-TÊTE --- */
+        header {
+            background-color: rgba(18, 21, 29, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--accent-neon);
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: table;
+            width: 100%;
+        }
+
+        .logo-box {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .logo-box span {
+            color: var(--accent-neon);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .nav-box {
+            display: table-cell;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .nav-box a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-box a:hover, .nav-box a.active {
+            color: var(--accent-neon);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* --- CONTENEUR PRINCIPAL --- */
+        .main-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        /* --- HERO INTRO --- */
+        .guide-intro {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .guide-intro h1 {
+            font-size: 42px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .guide-intro h1 span {
+            color: var(--accent-neon);
+        }
+
+        .guide-intro p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* --- TITRES DES SECTIONS --- */
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-left: 4px solid var(--accent-neon);
+            padding-left: 15px;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- BLOC ALERTE / ENCADRÉ --- */
+        .alert-box {
+            background-color: rgba(225, 29, 72, 0.07);
+            border-left: 4px solid var(--accent-neon);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 30px;
+        }
+
+        .alert-box p {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        /* --- GRILLE DES CARTES PILIERS --- */
+        .pilars-layout {
+            display: table;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 20px 0;
+            margin-bottom: 40px;
+        }
+
+        .pilar-card {
+            display: table-cell;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            width: 50%;
+            vertical-align: top;
+            transition: all 0.3s ease;
+        }
+
+        .pilar-card:hover {
+            border-color: var(--accent-neon);
+            transform: translateY(-4px);
+            background-color: var(--bg-card-hover);
+            box-shadow: 0 10px 25px rgba(225, 29, 72, 0.05);
+        }
+
+        .pilar-card h3 {
+            color: var(--accent-neon);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        /* --- TABLEAU COMPARATIF --- */
+        .table-responsive {
+            width: 100%;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+        }
+
+        th, td {
+            padding: 18px;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: rgba(225, 29, 72, 0.05);
+            color: var(--accent-neon);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--accent-neon);
+        }
+
+        td {
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .status-good { color: var(--success); font-weight: bold; }
+        .status-bad { color: var(--danger); font-weight: bold; }
+
+        /* --- BARRES DE SUPREMATIE --- */
+        .stat-group {
+            margin-bottom: 25px;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-track {
+            background-color: #1a1f2c;
+            height: 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #991b1b, var(--accent-neon));
+            border-radius: 20px;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* --- PARCOURS NUMÉROTÉ --- */
+        .step-list {
+            margin: 30px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            background-color: rgba(225, 29, 72, 0.1);
+            border: 1px solid var(--accent-neon);
+            color: var(--accent-neon);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step-item h4 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        /* --- ANIMATIONS TIMING --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- FOOTER COMPLET MARCO --- */
+        footer {
+            background-color: #050609;
+            border-top: 2px solid var(--accent-neon);
+            color: #fff;
+            padding: 50px 30px 25px 30px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: table;
+            width: 100%;
+        }
+
+        .footer-column {
+            display: table-cell;
+            width: 33.333%;
+            padding: 0 25px;
+            vertical-align: top;
+        }
+
+        .footer-column h4 {
+            color: #fff;
+            font-size: 15px;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 22px;
+            letter-spacing: 1px;
+        }
+
+        .footer-column p, .footer-column ul {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-neon);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 45px auto 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .footer-bottom span {
+            color: var(--text-muted);
+        }
+
+        .badge-secure-mg {
+            background-color: var(--accent-neon);
+            color: #fff;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRE DE NAVIGATION -->
+    <header>
+        <div class="header-container">
+            <div class="logo-box">GAMEUR STORE <span>MADA</span></div>
+            <div class="nav-box">
+                <a href="acheter.html">Comment acheter ?</a>
+                <a href="regle.html">Règles & Sécurité</a>
+                <a href="vente.html" class="active">Vendre un compte</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <!-- INTRO DU GUIDE -->
+        <div class="guide-intro">
+            <h1>Guide de <span>Rachat Officiel</span></h1>
+            <p>Transformez vos heures de jeu en cash de manière sécurisée. Nous reprenons vos comptes PUBG Mobile au prix le plus équitable du marché Malagasy.</p>
+        </div>
+
+        <!-- ENCADRÉ SÉCURITÉ -->
+        <div class="alert-box">
+            <p><strong>Sécurité Garantie :</strong> Évitez définitivement les risques d'arnaque, les faux intermédiaires et les acheteurs malhonnêtes des réseaux sociaux. Notre processus est 100% encadré par des professionnels.</p>
+        </div>
+
+        <!-- SECTION 1 : LES PILIERS -->
+        <h2>1. Pourquoi vendre votre compte chez nous ?</h2>
+        <div class="pilars-layout">
+            <div class="pilar-card">
+                <h3>Estimation juste</h3>
+                <p>Notre équipe analyse rigoureusement la valeur de vos objets mythiques, de vos passes de combat et du niveau du laboratoire pour formuler l'offre la plus juste possible.</p>
+            </div>
+            <div class="pilar-card">
+                <h3>Paiement Rapide</h3>
+                <p>Une fois les contrôles de sécurité et les changements de liaisons validés par l'administrateur, votre argent est immédiatement versé sur votre Mobile Money.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 2 : TABLEAU COMPARATIF -->
+        <h2>2. Comparatif de vente : Notre Store vs Vente Solo</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Caractéristiques</th>
+                        <th>Gameur Store Mada</th>
+                        <th>Vente en Solo (Facebook)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Risque de fraude</strong></td>
+                        <td class="status-good">0% (Processus encadré)</td>
+                        <td class="status-bad">Élevé (Arnaques fréquentes)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Délai de paiement</strong></td>
+                        <td>Moins d'une mois</td>
+                        <td>Incertain (plusieur mois ou ans)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestion des liaisons</strong></td>
+                        <td>Accès clean et securiser;changable en un instant</td>
+                        <td>À vos risques et périls</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stabilité du prix</strong></td>
+                        <td>Offre ferme et définitive</td>
+                        <td>Négociations agressives ou impayés</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECTION 3 : DEMANDES DE RACHAT (BARRES DE PROGRESSION) -->
+        <h2>3. Demandes et Priorités de Rachat</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Nous acceptons une large sélection de jeux, avec une priorité accordée aux titres majeurs suivants :</p>
+        
+        <div class="stat-group">
+            <span class="stat-label">PUBG Mobile (Priorité Maximale)</span>
+            <div class="stat-track"><div class="stat-fill" style="width: 90%;"></div></div>
+        </div>
+
+
+        <!-- SECTION 4 : LE PARCOURS ÉTAPE PAR ÉTAPE -->
+        <h2>4. Le Parcours de Vente Officiel</h2>
+        <ul class="step-list">
+            <li class="step-item">
+                <div class="step-number">1</div>
+                <h4>Inscription ou Connexion sur le web</h4>
+                <p>Malheuresement,Si vous avez pas inscrit sur notre page web! vous pouvez pas vendre votre compte dand notre page web car notre equipe veut voir des information sur votre indentité....Si vous êtes inscrit bonne nouvelle</p>
+            </li>
+            <li class="step-item">
+                <div class="step-number">2</div>
+                <h4>Contact Initial</h4>
+                <p>Envoyez-nous les captures d'écran complètes de votre profil, de votre inventaire et de vos skins d'armes sur notre messagerie privée.</p>
+            </li>
+            <li class="step-item">
+                <div class="step-number">3</div>
+                <h4>Expertise Technique</h4>
+                <p>Nos administrateurs analysent la rareté de vos items, l'historique d'intégrité et les différentes liaisons actuelles de votre compte.</p>
+            </li>
+            <li class="step-item">
+                <div class="step-number">4</div>
+                <h4>Offre d'Achat</h4>
+                <p>Nous tombons d'accord sur un prix ferme en fonction de la valeur marché de votre inventaire.</p>
+            </li>
+            <li class="step-item">
+                <div class="step-number">5</div>
+                <h4>Sécurisation & Versement</h4>
+                <p>L'administrateur sécurise le compte, effectue les bascules de sécurité réseau, puis procède immédiatement à votre paiement (Mvola, Airtel Money, Orange Money ou Espèces à Antananarivo).</p>
+            </li>
+            <li class="step-item">
+                <div class="step-number">6</div>
+                <h4>Cas exeptionelle</h4>
+                <p>Si l'acheteur veut faire du face à face c'est à dire transaction direct....il a le droit de contact afin de prendre votre rendez-vous et puis l'administrateur ne peut plus s'emmeller</p>
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- PIED DE PAGE MARCO REPRIS DE VOTRE PROJET -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Gameur Store Mada</h4>
+                <p>La plateforme de référence à Madagascar pour l'achat et la vente sécurisée de comptes PUBG Mobile. Pas d'arnaque, que du fiable.</p>
+                <p style="margin-top: 20px;"><strong>Statut :</strong> 100% Sécurisé <span class="badge-secure-mg">MG</span></p>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Liens Utiles</h4>
+                <ul>
+                    <li><a href="acheter.html">Découvrir nos offres</a></li>
+                    <li><a href="acheter.html">Comment acheter ?</a></li>
+                    <li><a href="vente.html">Vendre un compte</a></li>
+                    <li><a href="regle.html">Règles & Sécurité</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Paiement & Contact</h4>
+                <p><strong>Transactions :</strong><br>Mvola, Airtel Money, Orange Money, Espèces</p>
+                <p style="margin-top: 20px;"><strong>Contact :</strong><br>Rejoignez-nous sur notre page officielle : Gameur Store Madagascar</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            &copy; 2026 Gameur Store Madagascar. Tous droits réservés. <span>Créé par MARCO</span>
+        </div>
+    </footer>
+
+</body>
+</html>
