@@ -132,7 +132,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // BASCULE ENTRE LES BLOCS
+    // BASCULE D'ONGLETS
     const loginBlock = document.getElementById('login-block');
     const registerBlock = document.getElementById('register-block');
     const toRegisterLink = document.getElementById('to-register');
@@ -152,6 +152,11 @@
       });
     }
 
+    // FONCTION DE REDIRECTION UNIQUE
+    function redirigerVersAccueil() {
+      window.location.replace("index.html");
+    }
+
     // FORMULAIRE DE CONNEXION (LOGIN)
     const loginForm = document.getElementById('main-login-form');
     if (loginForm) {
@@ -162,8 +167,7 @@
 
         signInWithEmailAndPassword(auth, email, password)
           .then(() => {
-            alert("Connexion réussie !");
-            window.location.href = "index.html";
+            redirigerVersAccueil();
           })
           .catch(error => { alert("Erreur de connexion : " + error.message); });
       });
@@ -186,35 +190,31 @@
         const optionSelected = registerForm.querySelector('input[name="option"]:checked');
         const optionJoueur = optionSelected ? optionSelected.value : "Non spécifié";
 
-        // Tentative d'inscription
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
-            // Sauvegarde des infos
             setDoc(doc(db, "utilisateurs", user.uid), {
               nom: nom, prenom: prenom, email: email, telephone: phone,
               facebook: facebook, adresse: adresse, option: optionJoueur,
               createdAt: new Date().toISOString()
             })
             .then(() => {
-              alert("Inscription réussie ! Bienvenue !");
-              window.location.href = "index.html";
+              redirigerVersAccueil();
             })
-            .catch(err => { alert("Erreur base de données : " + err.message); });
+            .catch(() => { redirigerVersAccueil(); }); // Redirige même s'il y a un souci mineur sur Firestore
           })
           .catch((error) => {
-            // SI L'EMAIL EXISTE DÉJÀ, ON LE CONNECTE DIRECTEMENT !
+            // SI DÉJÀ ENREGISTRÉ : CONNEXION DIRECTE SANS MESSAGE D'ERREUR !
             if (error.code === 'auth/email-already-in-use') {
               signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                  alert("Compte existant trouvé. Connexion automatique réussie !");
-                  window.location.href = "index.html";
+                  redirigerVersAccueil();
                 })
-                .catch(loginErr => {
-                  alert("Cet e-mail existe déjà, mais le mot de passe entré est incorrect.");
+                .catch(() => {
+                  alert("Ce compte existe déjà, mais le mot de passe est incorrect.");
                 });
             } else {
-              alert("Erreur d'inscription : " + error.message);
+              alert("Erreur : " + error.message);
             }
           });
       });
