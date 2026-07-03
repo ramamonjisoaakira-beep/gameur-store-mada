@@ -6,7 +6,6 @@
   <title>Gamer Store - Login & Register</title>
   <link rel="stylesheet" href="connex.css">
   <style>
-    /* Rapproche le style visuel d'un bouton cliquable net */
     #to-register, #to-login {
       cursor: pointer;
       text-decoration: underline;
@@ -153,7 +152,7 @@
       });
     }
 
-    // CONNEXION
+    // FORMULAIRE DE CONNEXION (LOGIN)
     const loginForm = document.getElementById('main-login-form');
     if (loginForm) {
       loginForm.addEventListener('submit', (e) => {
@@ -170,7 +169,7 @@
       });
     }
 
-    // INSCRIPTION DIRECTE
+    // FORMULAIRE D'INSCRIPTION (REGISTER)
     const registerForm = document.getElementById('main-register-form');
     if (registerForm) {
       registerForm.addEventListener('submit', (e) => {
@@ -187,27 +186,37 @@
         const optionSelected = registerForm.querySelector('input[name="option"]:checked');
         const optionJoueur = optionSelected ? optionSelected.value : "Non spécifié";
 
+        // Tentative d'inscription
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
-
+            // Sauvegarde des infos
             setDoc(doc(db, "utilisateurs", user.uid), {
-              nom: nom,
-              prenom: prenom,
-              email: email,
-              telephone: phone,
-              facebook: facebook,
-              adresse: adresse,
-              option: optionJoueur,
+              nom: nom, prenom: prenom, email: email, telephone: phone,
+              facebook: facebook, adresse: adresse, option: optionJoueur,
               createdAt: new Date().toISOString()
             })
             .then(() => {
-              alert("Inscription réussie ! Bienvenue dans le jeu !");
+              alert("Inscription réussie ! Bienvenue !");
               window.location.href = "index.html";
             })
             .catch(err => { alert("Erreur base de données : " + err.message); });
           })
-          .catch(error => { alert("Erreur d'inscription : " + error.message); });
+          .catch((error) => {
+            // SI L'EMAIL EXISTE DÉJÀ, ON LE CONNECTE DIRECTEMENT !
+            if (error.code === 'auth/email-already-in-use') {
+              signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                  alert("Compte existant trouvé. Connexion automatique réussie !");
+                  window.location.href = "index.html";
+                })
+                .catch(loginErr => {
+                  alert("Cet e-mail existe déjà, mais le mot de passe entré est incorrect.");
+                });
+            } else {
+              alert("Erreur d'inscription : " + error.message);
+            }
+          });
       });
     }
   </script>
