@@ -133,18 +133,23 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Configuration Firebase issue de ta capture d'écran 684
-    const firebaseConfig = {
-      apiKey: "AIzaSyCp3YoJ3y4LUiKhaKwpyWaKrEQ6QBnzeIg",
-      authDomain: "gameur-store-mada.firebaseapp.com",
-      projectId: "gameur-store-mada",
-      storageBucket: "gameur-store-mada.firebasestorage.app",
-      messagingSenderId: "469078679688",
-      appId: "1:469078679688:web:43619b15f7d3a08c78ff3d"
-    };
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCp3YoJ3y4LUiKhaKwpYWaKrEQ6QBNzeIg",
+  authDomain: "gameur-store-mada.firebaseapp.com",
+  projectId: "gameur-store-mada",
+  storageBucket: "gameur-store-mada.firebasestorage.app",
+  messagingSenderId: "469078679688",
+  appId: "1:469078679688:web:43619b15f7d3a08c78ff3d"
+};
 
-    const app = initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
@@ -234,60 +239,57 @@
     });
   }
 
-  // --- FORMULAIRE D'INSCRIPTION + STOCKAGE FIRESTORE ---
-  const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
-  if (registerForm) {
-    registerForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+  // --- FORMULAIRE D'INSCRIPTION + STOCKAGE ---
+const registerForm = registerBlock ? registerBlock.querySelector('form') : null;
+if (registerForm) {
+  registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-      const inputs = registerForm.querySelectorAll('input');
-      const nom = inputs[0].value;
-      const prenom = inputs[1].value;
-      const email = inputs[2].value;
-      const password = inputs[3].value;
-      const phone = inputs[4].value;
-      const facebook = inputs[5].value;
-      const adresse = inputs[6].value;
-      const photoBase64 = photoDataInput ? photoDataInput.value : "";
-      
-      const optionSelected = registerForm.querySelector('input[name="option-joueur"]:checked');
-      const optionJoueur = optionSelected ? optionSelected.value : "Aucune";
+    const inputs = registerForm.querySelectorAll('input');
+    const nom = inputs[0] ? inputs[0].value : "";
+    const prenom = inputs[1] ? inputs[1].value : "";
+    const email = inputs[2] ? inputs[2].value : "";
+    const password = inputs[3] ? inputs[3].value : "";
+    const phone = inputs[4] ? inputs[4].value : "";
+    const facebook = inputs[5] ? inputs[5].value : "";
+    const adresse = inputs[6] ? inputs[6].value : "";
+    
+    // Récupération de la photo et de l'option de jeu
+    const photoDataInput = document.getElementById('photo-data');
+    const photoBase64 = photoDataInput ? photoDataInput.value : "";
+    const optionSelected = registerForm.querySelector('input[name="option"]:checked');
+    const optionJoueur = optionSelected ? optionSelected.value : "Non spécifié";
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
+    // 1. Création de l'utilisateur dans Firebase Auth
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
 
-          // Sauvegarde dans Firestore dans la collection "utilisateurs"
-          setDoc(doc(db, "utilisateurs", user.uid), {
-            nom: nom,
-            prenom: prenom,
-            email: email,
-            telephone: phone,
-            facebook: facebook,
-            adresse: adresse,
-            photo: photoBase64,
-            option: optionJoueur,
-            createdAt: new Date().toISOString()
-          })
-          .then(() => {
-            import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js")
-              .then(({ sendEmailVerification, signOut }) => {
-                sendEmailVerification(user)
-                  .then(() => {
-                    alert("Inscription réussie et profil enregistré ! Un e-mail de validation vous a été envoyé.");
-                    signOut(auth).then(() => {
-                      registerBlock.style.display = 'none';
-                      loginBlock.style.display = 'block';
-                    });
-                  })
-                  .catch(err => alert("Erreur d'envoi d'e-mail : " + err.message));
-              });
-          })
-          .catch(err => alert("Erreur base de données Firestore : " + err.message));
+        // 2. Sauvegarde directe dans Firestore (Sans validation par email !)
+        setDoc(doc(db, "utilisateurs", user.uid), {
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          telephone: phone,
+          facebook: facebook,
+          adresse: adresse,
+          photo: photoBase64,
+          option: optionJoueur,
+          createdAt: new Date().toISOString()
         })
-        .catch(error => alert("Erreur d'inscription : " + error.message));
-    });
-  }
+        .then(() => {
+          alert("Inscription réussie ! Bienvenue !");
+          window.location.href = "index.html"; 
+        })
+        .catch((err) => {
+          alert("Erreur base de données : " + err.message);
+        });
+      })
+      .catch((error) => {
+        alert("Erreur d'inscription : " + error.message);
+      });
+  });
+}
 </script>
 </body>
 </html>
